@@ -4,7 +4,7 @@ import com.example.ApiArenaXperience.dto.CreateUserRequest;
 import com.example.ApiArenaXperience.error.ActivationExpiredException;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.repo.UserRepository;
-import com.example.ApiArenaXperience.security.util.SendGridMailSender;
+import com.example.ApiArenaXperience.security.util.ResendMailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final SendGridMailSender mailSender;
+    private final ResendMailSender mailSender;
 
 
     @Value("${activation.duration}")
