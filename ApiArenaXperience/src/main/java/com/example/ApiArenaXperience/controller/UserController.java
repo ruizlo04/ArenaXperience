@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,6 +76,16 @@ public class UserController {
                 .body(UserResponse.of(userService.activateAccount(token)));
     }
 
+    @GetMapping("/me")
+    public UserResponse me(@AuthenticationPrincipal Usuario user) {
+        return UserResponse.of(user);
+    }
+
+
+    @GetMapping("/me/admin")
+    public Usuario adminMe(@AuthenticationPrincipal Usuario user) {
+        return user;
+    }
 
 
 }
