@@ -4,7 +4,7 @@ import com.example.ApiArenaXperience.dto.CreateUserRequest;
 import com.example.ApiArenaXperience.error.ActivationExpiredException;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.repo.UserRepository;
-import com.example.ApiArenaXperience.security.util.ResendMailSender;
+import com.example.ApiArenaXperience.security.util.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ResendMailSender mailSender;
-
+    private final MailService mailService;
 
     @Value("${activation.duration}")
     private int activationDuration;
@@ -34,14 +33,15 @@ public class UserService {
                 .password(passwordEncoder.encode(createUserRequest.password()))
                 .email(createUserRequest.email())
                 .activationToken(generateRandomActivationCode())
+                .createdAt(Instant.now())
+                .enabled(false)
                 .build();
 
         try {
-            mailSender.sendMail(createUserRequest.email(), "Activación de cuenta", user.getActivationToken());
+            mailService.sendSimpleMessage(createUserRequest.email(), user.getActivationToken());
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Error al enviar el email de activación");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al enviar el email de activación");
         }
-
 
         return userRepository.save(user);
     }
@@ -51,9 +51,8 @@ public class UserService {
     }
 
     public Usuario activateAccount(String token) {
-
         return userRepository.findByActivationToken(token)
-                .filter(user -> ChronoUnit.MINUTES.between(Instant.now(), user.getCreatedAt()) - activationDuration < 0)
+                .filter(user -> ChronoUnit.MINUTES.between(user.getCreatedAt(), Instant.now()) < activationDuration)
                 .map(user -> {
                     user.setEnabled(true);
                     user.setActivationToken(null);
