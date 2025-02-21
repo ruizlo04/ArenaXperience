@@ -1,14 +1,15 @@
 package com.example.ApiArenaXperience.controller;
 
-import com.example.ApiArenaXperience.dto.ActivateAccountRequest;
-import com.example.ApiArenaXperience.dto.CreateUserRequest;
-import com.example.ApiArenaXperience.dto.LoginRequest;
-import com.example.ApiArenaXperience.dto.UserResponse;
+import com.example.ApiArenaXperience.dto.user.ActivateAccountRequest;
+import com.example.ApiArenaXperience.dto.user.CreateUserRequest;
+import com.example.ApiArenaXperience.dto.user.LoginRequest;
+import com.example.ApiArenaXperience.dto.user.UserResponse;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.security.jwt.access.JwtService;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshToken;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenService;
 import com.example.ApiArenaXperience.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<UserResponse> register(@RequestBody CreateUserRequest createUserRequest) {
+    public ResponseEntity<UserResponse> register(@RequestBody @Valid CreateUserRequest createUserRequest) {
         Usuario user = userService.createUser(createUserRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
