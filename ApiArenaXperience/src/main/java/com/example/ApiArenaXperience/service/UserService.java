@@ -1,6 +1,6 @@
 package com.example.ApiArenaXperience.service;
 
-import com.example.ApiArenaXperience.dto.CreateUserRequest;
+import com.example.ApiArenaXperience.dto.user.CreateUserRequest;
 import com.example.ApiArenaXperience.error.ActivationExpiredException;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.repo.UserRepository;
