@@ -68,6 +68,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/error", "/activate/account/").permitAll()
                 .requestMatchers("/me/admin").hasRole("ADMIN")
+                .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated());
 
