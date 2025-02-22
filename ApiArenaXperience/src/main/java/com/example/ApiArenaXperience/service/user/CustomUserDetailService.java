@@ -1,4 +1,4 @@
-package com.example.ApiArenaXperience.service;
+package com.example.ApiArenaXperience.service.user;
 
 import com.example.ApiArenaXperience.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
