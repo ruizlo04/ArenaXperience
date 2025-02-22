@@ -1,9 +1,6 @@
 package com.example.ApiArenaXperience.controller;
 
-import com.example.ApiArenaXperience.dto.user.ActivateAccountRequest;
-import com.example.ApiArenaXperience.dto.user.CreateUserRequest;
-import com.example.ApiArenaXperience.dto.user.LoginRequest;
-import com.example.ApiArenaXperience.dto.user.UserResponse;
+import com.example.ApiArenaXperience.dto.user.*;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.security.jwt.access.JwtService;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshToken;
@@ -11,6 +8,9 @@ import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenRequest;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenService;
 import com.example.ApiArenaXperience.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -122,5 +123,39 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @Operation(summary = "Editar un usuario", description = "Permite a un usuario autenticado modificar su información de perfil.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDto.class))),
+            @ApiResponse(responseCode = "403", description = "No tienes permisos para editar este usuario"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @PutMapping("/{username}")
+    public GetUserDto editUser(
+            @PathVariable String username,
+            @RequestBody @Valid EditUserCmd editUserCmd,
+            @AuthenticationPrincipal Usuario user) {
+        String authenticatedUsername = user.getUsername();
+        Usuario updatedUser = userService.editUser(username, editUserCmd, authenticatedUsername);
+        return GetUserDto.of(updatedUser);
+    }
+
+    @Operation(summary = "Editar un usuario", description = "Permite a un usuario autenticado modificar su información de perfil.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDto.class))),
+            @ApiResponse(responseCode = "403", description = "No tienes permisos para editar este usuario"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @PutMapping("/admin/{username}")
+    public GetUserDto editUserByAdmin(
+            @PathVariable String username,
+            @RequestBody @Valid EditUserCmd editUserCmd,
+            @AuthenticationPrincipal Usuario user) {
+        String authenticatedUsername = user.getUsername();
+        Usuario updatedUser = userService.editUser(username, editUserCmd, authenticatedUsername);
+        return GetUserDto.of(updatedUser);
     }
 }

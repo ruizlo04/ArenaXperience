@@ -1,6 +1,7 @@
 package com.example.ApiArenaXperience.service.user;
 
 import com.example.ApiArenaXperience.dto.user.CreateUserRequest;
+import com.example.ApiArenaXperience.dto.user.EditUserCmd;
 import com.example.ApiArenaXperience.dto.user.UserResponse;
 import com.example.ApiArenaXperience.error.ActivationExpiredException;
 import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
@@ -79,6 +80,21 @@ public class UserService {
         return users.stream()
                 .map(UserResponse::of)
                 .collect(Collectors.toList());
+    }
+
+    public Usuario editUser(String username, EditUserCmd editUserCmd, String authenticatedUsername) {
+        if (!authenticatedUsername.equals(username)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para editar este usuario");
+        }
+
+        Usuario userToEdit = userRepository.findFirstByUsername(username)
+                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+
+        userToEdit.setEmail(editUserCmd.email());
+        userToEdit.setPassword(editUserCmd.password());
+        userToEdit.setPhoneNumber(editUserCmd.phoneNumber());
+
+        return userRepository.save(userToEdit);
     }
 
 }

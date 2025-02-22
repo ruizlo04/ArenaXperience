@@ -1,8 +1,6 @@
 package com.example.ApiArenaXperience.dto.user;
 
-import com.example.ApiArenaXperience.model.UserRole;
 import com.example.ApiArenaXperience.validation.FieldsValueMatch;
-import com.example.ApiArenaXperience.validation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -18,10 +16,7 @@ import jakarta.validation.constraints.Size;
                 fieldMatch = "verifyEmail",
                 message = "Los valores de email y verifyEmail no coinciden")
 })
-public record CreateUserRequest(
-        @NotBlank(message = "Debes incluir un username")
-        @UniqueUsername
-        String username,
+public record EditUserCmd(
         @Email(message = "El email debe ser válido y contener un '@'")
         String email,
         String verifyEmail,
@@ -32,9 +27,7 @@ public record CreateUserRequest(
                 message = "La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial"
         )
         String password,
-        @NotBlank(message = "Debes confirmar la contraseña")
         String verifyPassword,
-        String phoneNumber,
-        UserRole rol
+        String phoneNumber
 ) {
 }
