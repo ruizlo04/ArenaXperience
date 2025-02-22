@@ -1,7 +1,10 @@
-package com.example.ApiArenaXperience.service;
+package com.example.ApiArenaXperience.service.user;
 
 import com.example.ApiArenaXperience.dto.user.CreateUserRequest;
+import com.example.ApiArenaXperience.dto.user.UserResponse;
 import com.example.ApiArenaXperience.error.ActivationExpiredException;
+import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
+import com.example.ApiArenaXperience.model.UserRole;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.repo.UserRepository;
 import com.example.ApiArenaXperience.security.util.MailService;
@@ -14,7 +17,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +34,7 @@ public class UserService {
     private int activationDuration;
 
     public Usuario createUser(CreateUserRequest createUserRequest) {
+
         Usuario user = Usuario.builder()
                 .username(createUserRequest.username())
                 .password(passwordEncoder.encode(createUserRequest.password()))
@@ -35,6 +42,7 @@ public class UserService {
                 .activationToken(generateRandomActivationCode())
                 .createdAt(Instant.now())
                 .enabled(false)
+                .roles(Collections.singleton(createUserRequest.rol() != null ? createUserRequest.rol() : UserRole.USER))
                 .build();
 
         try {
@@ -45,6 +53,7 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
 
     public String generateRandomActivationCode() {
         return UUID.randomUUID().toString();
@@ -60,4 +69,16 @@ public class UserService {
                 })
                 .orElseThrow(() -> new ActivationExpiredException("El código de activación no existe o ha caducado"));
     }
+    public List<UserResponse> getAllUsers() {
+        List<Usuario> users = userRepository.findAll();
+
+        if (users.isEmpty()) {
+            throw new UsersNotFoundException("No hay usuarios registrados en el sistema.");
+        }
+
+        return users.stream()
+                .map(UserResponse::of)
+                .collect(Collectors.toList());
+    }
+
 }

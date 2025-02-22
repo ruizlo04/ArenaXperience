@@ -9,7 +9,7 @@ import com.example.ApiArenaXperience.security.jwt.access.JwtService;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshToken;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenRequest;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenService;
-import com.example.ApiArenaXperience.service.UserService;
+import com.example.ApiArenaXperience.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,12 +18,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -113,5 +116,11 @@ public class UserController {
     @GetMapping("/me/admin")
     public Usuario adminMe(@AuthenticationPrincipal Usuario user) {
         return user;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }
