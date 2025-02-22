@@ -8,12 +8,14 @@ import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
 import com.example.ApiArenaXperience.model.UserRole;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.repo.UserRepository;
+import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenRepository;
 import com.example.ApiArenaXperience.security.util.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
@@ -30,6 +32,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${activation.duration}")
     private int activationDuration;
@@ -96,5 +99,29 @@ public class UserService {
 
         return userRepository.save(userToEdit);
     }
+
+    @Transactional
+    public void deleteUser(String username, String authenticatedUsername) {
+        if (!authenticatedUsername.equals(username)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para eliminar este usuario");
+        }
+
+        Usuario userToDelete = userRepository.findFirstByUsername(username)
+                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+
+        refreshTokenRepository.deleteByUserId(userToDelete.getId());
+
+        userRepository.delete(userToDelete);
+    }
+
+    @Transactional
+    public void deleteUserByAdmin(String username) {
+        Usuario userToDelete = userRepository.findFirstByUsername(username)
+                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+
+        refreshTokenRepository.deleteByUserId(userToDelete.getId());
+        userRepository.delete(userToDelete);
+    }
+
 
 }

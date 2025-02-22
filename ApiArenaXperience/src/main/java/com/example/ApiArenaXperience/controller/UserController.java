@@ -158,4 +158,36 @@ public class UserController {
         Usuario updatedUser = userService.editUser(username, editUserCmd, authenticatedUsername);
         return GetUserDto.of(updatedUser);
     }
+
+    @Operation(summary = "Eliminar un usuario",
+            description = "Permite a un usuario autenticado eliminar su propia cuenta.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Usuario eliminado correctamente"),
+            @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este usuario"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @DeleteMapping("/users/{username}")
+    public ResponseEntity<?> deleteUser(
+            @Parameter(description = "Nombre de usuario del usuario a eliminar", required = true)
+            @PathVariable String username,
+            @AuthenticationPrincipal Usuario user) {
+
+        userService.deleteUser(username, user.getUsername());
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Eliminar un usuario",
+            description = "Permite a un usuario autenticado eliminar su propia cuenta.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Usuario eliminado correctamente"),
+            @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este usuario"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @DeleteMapping("/users/admin/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteUserByAdmin(@PathVariable String username) {
+        userService.deleteUserByAdmin(username);
+        return ResponseEntity.noContent().build();
+    }
+
 }
