@@ -45,6 +45,7 @@ public class Usuario implements UserDetails {
     private String activationToken;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
     @Override
