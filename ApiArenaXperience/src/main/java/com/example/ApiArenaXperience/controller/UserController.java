@@ -7,6 +7,7 @@ import com.example.ApiArenaXperience.dto.user.UserResponse;
 import com.example.ApiArenaXperience.model.Usuario;
 import com.example.ApiArenaXperience.security.jwt.access.JwtService;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshToken;
+import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenRequest;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenService;
 import com.example.ApiArenaXperience.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,6 +68,19 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserResponse.of(user, accessToken, refreshToken.getToken()));
+    }
+
+    @Operation(summary = "Refrescar token", description = "Genera un nuevo token de acceso utilizando un refresh token válido.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Nuevo token de acceso generado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Refresh token inválido o expirado"),
+            @ApiResponse(responseCode = "401", description = "No autorizado")
+    })
+    @PostMapping("/auth/refresh/token")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest req) {
+        String token = req.refreshToken();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(refreshTokenService.refreshToken(token));
     }
 
     @Operation(summary = "Activar cuenta", description = "Activa la cuenta de un usuario con un token de activación")
