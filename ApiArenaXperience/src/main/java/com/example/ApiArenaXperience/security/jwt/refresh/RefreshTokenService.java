@@ -1,7 +1,7 @@
 package com.example.ApiArenaXperience.security.jwt.refresh;
 
 import com.example.ApiArenaXperience.dto.user.UserResponse;
-import com.example.ApiArenaXperience.model.Usuario;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.repo.UserRepository;
 import com.example.ApiArenaXperience.security.jwt.access.JwtService;
 import lombok.RequiredArgsConstructor;

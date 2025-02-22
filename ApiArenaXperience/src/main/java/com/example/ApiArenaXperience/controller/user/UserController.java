@@ -1,7 +1,7 @@
-package com.example.ApiArenaXperience.controller;
+package com.example.ApiArenaXperience.controller.user;
 
 import com.example.ApiArenaXperience.dto.user.*;
-import com.example.ApiArenaXperience.model.Usuario;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.security.jwt.access.JwtService;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshToken;
 import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenRequest;
@@ -27,7 +27,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor

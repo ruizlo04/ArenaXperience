@@ -1,4 +1,4 @@
-package com.example.ApiArenaXperience.model;
+package com.example.ApiArenaXperience.model.user;
 
 public enum UserRole {
 

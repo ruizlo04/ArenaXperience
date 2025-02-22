@@ -1,6 +1,6 @@
 package com.example.ApiArenaXperience.security.jwt.refresh;
 
-import com.example.ApiArenaXperience.model.Usuario;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 

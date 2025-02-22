@@ -1,6 +1,6 @@
 package com.example.ApiArenaXperience.dto.user;
 
-import com.example.ApiArenaXperience.model.UserRole;
+import com.example.ApiArenaXperience.model.user.UserRole;
 import com.example.ApiArenaXperience.validation.FieldsValueMatch;
 import com.example.ApiArenaXperience.validation.UniqueUsername;
 import jakarta.validation.constraints.Email;

@@ -1,6 +1,6 @@
 package com.example.ApiArenaXperience.dto.user;
 
-import com.example.ApiArenaXperience.model.Usuario;
+import com.example.ApiArenaXperience.model.user.Usuario;
 
 
 public record GetUserDto(
