@@ -64,4 +64,13 @@ public class EventoService {
 
         return eventoRepository.save(evento);
     }
+
+    @Transactional
+    public void deleteEvent(String name) {
+        Evento evento = eventoRepository.findByName(name)
+                .orElseThrow(() -> new EventNotFoundException("Evento no encontrado con nombre: " + name));
+
+        eventoRepository.delete(evento);
+    }
+
 }
