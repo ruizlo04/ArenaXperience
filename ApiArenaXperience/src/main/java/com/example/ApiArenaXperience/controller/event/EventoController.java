@@ -1,8 +1,6 @@
 package com.example.ApiArenaXperience.controller.event;
 
-import com.example.ApiArenaXperience.dto.event.CreateEventRequest;
-import com.example.ApiArenaXperience.dto.event.EventoResponse;
-import com.example.ApiArenaXperience.dto.event.GetListEventoFilterDto;
+import com.example.ApiArenaXperience.dto.event.*;
 import com.example.ApiArenaXperience.model.event.Evento;
 import com.example.ApiArenaXperience.service.event.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -82,5 +77,18 @@ public class EventoController {
         Evento evento = eventoService.createEvent(createEventRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(EventoResponse.of(evento));
     }
+
+    @Operation(summary = "Editar un evento", description = "Permite modificar la fecha y la capacidad de un evento existente por su nombre.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Evento editado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado")
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/evento/editar/{nombre}")
+    public ResponseEntity<GetEventoDto> editarEvento(@PathVariable String nombre, @RequestBody @Valid EditEventoCmd editEventoCmd) {
+        Evento eventoEditado = eventoService.editarEvento(nombre, editEventoCmd);
+        return ResponseEntity.ok(GetEventoDto.of(eventoEditado));
+    }
+
 
 }
