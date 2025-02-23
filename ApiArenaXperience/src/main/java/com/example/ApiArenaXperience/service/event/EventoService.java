@@ -4,8 +4,13 @@ import com.example.ApiArenaXperience.dto.event.CreateEventRequest;
 import com.example.ApiArenaXperience.dto.event.EditEventoCmd;
 import com.example.ApiArenaXperience.dto.event.EventoResponse;
 import com.example.ApiArenaXperience.error.event.EventNotFoundException;
+import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
 import com.example.ApiArenaXperience.model.event.Evento;
+import com.example.ApiArenaXperience.model.ticket.Ticket;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.repo.EventRepository;
+import com.example.ApiArenaXperience.repo.TicketRepository;
+import com.example.ApiArenaXperience.repo.UserRepository;
 import com.example.ApiArenaXperience.specification.EventoSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,6 +28,8 @@ import java.util.stream.Collectors;
 public class EventoService {
 
     private final EventRepository eventoRepository;
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
 
     public List<EventoResponse> getAllEvents() {
         List<Evento> events = eventoRepository.findAll();
@@ -72,5 +79,32 @@ public class EventoService {
 
         eventoRepository.delete(evento);
     }
+
+    @Transactional
+    public Ticket comprarTicket(String eventName, UUID usuarioId) {
+        Usuario usuario = userRepository.findByIdWithEvents(usuarioId)
+                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+
+        Evento evento = eventoRepository.findByName(eventName)
+                .orElseThrow(() -> new EventNotFoundException("Evento no encontrado"));
+
+        if (evento.getAttendees().contains(usuario)) {
+            throw new RuntimeException("El usuario ya está registrado en este evento.");
+        }
+
+        Ticket ticket = Ticket.builder()
+                .event(evento)
+                .user(usuario)
+                .build();
+
+        ticketRepository.save(ticket);
+
+        evento.addAttendee(usuario);
+        eventoRepository.save(evento);
+
+        return ticket;
+    }
+
+
 
 }
