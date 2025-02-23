@@ -1,5 +1,6 @@
 package com.example.ApiArenaXperience.model.event;
 
+import com.example.ApiArenaXperience.model.ticket.Ticket;
 import com.example.ApiArenaXperience.model.user.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -26,6 +27,7 @@ public class Evento {
     private String name;
     private LocalDate date;
     private int capacity;
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
@@ -39,6 +41,9 @@ public class Evento {
     )
     private Set<Usuario> attendees = new HashSet<>();
 
+    @OneToMany(mappedBy = "event",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<Ticket> tickets = new HashSet<>();
 
     public void addAttendee(Usuario usuario) {
         attendees.add(usuario);
@@ -48,5 +53,15 @@ public class Evento {
     public void removeAttendee(Usuario usuario) {
         attendees.remove(usuario);
         usuario.getEvents().remove(this);
+    }
+
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+        ticket.setEvent(this);
+    }
+
+    public void removeTicket(Ticket ticket) {
+        tickets.remove(ticket);
+        ticket.setEvent(null);
     }
 }

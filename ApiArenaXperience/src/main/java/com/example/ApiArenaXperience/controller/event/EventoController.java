@@ -1,7 +1,10 @@
 package com.example.ApiArenaXperience.controller.event;
 
 import com.example.ApiArenaXperience.dto.event.*;
+import com.example.ApiArenaXperience.dto.ticket.GetTicketDto;
 import com.example.ApiArenaXperience.model.event.Evento;
+import com.example.ApiArenaXperience.model.ticket.Ticket;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.service.event.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,9 +17,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -102,5 +107,20 @@ public class EventoController {
         eventoService.deleteEvent(name);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Comprar un ticket para un evento", description = "Permite a un usuario autenticado comprar un ticket para un evento específico.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ticket comprado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado"),
+            @ApiResponse(responseCode = "400", description = "El usuario ya está registrado en el evento")
+    })
+    @PostMapping("/evento/{eventName}/comprar-ticket")
+    public ResponseEntity<GetTicketDto> comprarTicket(
+            @PathVariable String eventName,
+            @AuthenticationPrincipal Usuario usuario) {
+        Ticket ticket = eventoService.comprarTicket(eventName, usuario.getId());
+        return ResponseEntity.ok(GetTicketDto.of(ticket));
+    }
+
 
 }

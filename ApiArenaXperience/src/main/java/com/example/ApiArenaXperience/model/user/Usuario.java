@@ -1,6 +1,7 @@
 package com.example.ApiArenaXperience.model.user;
 
 import com.example.ApiArenaXperience.model.event.Evento;
+import com.example.ApiArenaXperience.model.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -49,6 +50,10 @@ public class Usuario implements UserDetails {
 
     @ManyToMany(mappedBy = "attendees")
     private Set<Evento> events = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Ticket> tickets = new HashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
