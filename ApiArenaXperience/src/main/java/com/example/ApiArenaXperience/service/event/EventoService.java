@@ -1,5 +1,6 @@
 package com.example.ApiArenaXperience.service.event;
 
+import com.example.ApiArenaXperience.dto.event.CreateEventRequest;
 import com.example.ApiArenaXperience.dto.event.EventoResponse;
 import com.example.ApiArenaXperience.error.event.EventNotFoundException;
 import com.example.ApiArenaXperience.model.event.Evento;
@@ -8,7 +9,6 @@ import com.example.ApiArenaXperience.specification.EventoSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,5 +34,16 @@ public class EventoService {
     public List<Evento> buscarEventos(String nombre, LocalDate fecha, Integer capacidad) {
         Specification<Evento> spec = EventoSpecification.filtrarEventos(nombre, fecha, capacidad);
         return eventoRepository.findAll(spec);
+    }
+
+    public Evento createEvent(CreateEventRequest createEventRequest){
+
+        Evento evento = Evento.builder()
+                .name(createEventRequest.name())
+                .date(createEventRequest.date())
+                .capacity(createEventRequest.capacity())
+                .build();
+
+        return eventoRepository.save(evento);
     }
 }
