@@ -84,11 +84,23 @@ public class EventoController {
             @ApiResponse(responseCode = "404", description = "Evento no encontrado")
     })
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/evento/editar/{nombre}")
-    public ResponseEntity<GetEventoDto> editarEvento(@PathVariable String nombre, @RequestBody @Valid EditEventoCmd editEventoCmd) {
-        Evento eventoEditado = eventoService.editarEvento(nombre, editEventoCmd);
+    @PutMapping("/evento/editar/{name}")
+    public ResponseEntity<GetEventoDto> editarEvento(@PathVariable String name, @RequestBody @Valid EditEventoCmd editEventoCmd) {
+        Evento eventoEditado = eventoService.editarEvento(name, editEventoCmd);
         return ResponseEntity.ok(GetEventoDto.of(eventoEditado));
     }
 
+    @Operation(summary = "Eliminar un evento", description = "Permite al administrador del evento eliminarlo.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Evento eliminado exitosamente"),
+            @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este evento"),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado")
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/evento/eliminar/{name}")
+    public ResponseEntity<?> eliminarEvento(@PathVariable String name) {
+        eventoService.deleteEvent(name);
+        return ResponseEntity.ok().build();
+    }
 
 }

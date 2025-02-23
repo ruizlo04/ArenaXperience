@@ -71,7 +71,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/events", "/events/search").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/error", "/activate/account/").permitAll()
                 .requestMatchers("/me/admin", "/users", "/admin/{username}", "/users/admin/{username}",
-                        "/evento/register", "/evento/editar/{name}").hasRole("ADMIN")
+                        "/evento/register", "/evento/editar/{name}", "/evento/eliminar/{name}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/{username}").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/users/{username}").authenticated()
                 .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
