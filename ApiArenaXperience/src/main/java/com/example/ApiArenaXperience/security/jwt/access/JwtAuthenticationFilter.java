@@ -1,6 +1,6 @@
 package com.example.ApiArenaXperience.security.jwt.access;
 
-import com.example.ApiArenaXperience.model.Usuario;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.repo.UserRepository;
 import com.example.ApiArenaXperience.security.exceptionhandling.JwtException;
 import jakarta.servlet.FilterChain;

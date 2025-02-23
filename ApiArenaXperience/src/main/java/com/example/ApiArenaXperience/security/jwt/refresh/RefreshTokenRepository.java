@@ -1,6 +1,6 @@
 package com.example.ApiArenaXperience.security.jwt.refresh;
 
-import com.example.ApiArenaXperience.model.Usuario;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;

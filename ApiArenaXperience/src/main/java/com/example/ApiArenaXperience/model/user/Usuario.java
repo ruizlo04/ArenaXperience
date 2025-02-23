@@ -1,5 +1,6 @@
-package com.example.ApiArenaXperience.model;
+package com.example.ApiArenaXperience.model.user;
 
+import com.example.ApiArenaXperience.model.event.Evento;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="user_entity")
+@Table(name = "user_entity")
 public class Usuario implements UserDetails {
 
     @Id
@@ -31,9 +32,7 @@ public class Usuario implements UserDetails {
     private String username;
 
     private String password;
-
     private String email;
-
     private String phoneNumber;
 
     @Builder.Default
@@ -47,6 +46,9 @@ public class Usuario implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
+    @ManyToMany(mappedBy = "attendees")
+    private Set<Evento> events = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

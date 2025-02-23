@@ -1,6 +1,6 @@
 package com.example.ApiArenaXperience.repo;
 
-import com.example.ApiArenaXperience.model.Usuario;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
