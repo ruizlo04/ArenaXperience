@@ -149,14 +149,14 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @PutMapping("/admin/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
     public GetUserDto editUserByAdmin(
             @PathVariable String username,
-            @RequestBody @Valid EditUserCmd editUserCmd,
-            @AuthenticationPrincipal Usuario user) {
-        String authenticatedUsername = user.getUsername();
-        Usuario updatedUser = userService.editUser(username, editUserCmd, authenticatedUsername);
+            @RequestBody @Valid EditUserCmd editUserCmd) {
+        Usuario updatedUser = userService.editUserByAdmin(username, editUserCmd);
         return GetUserDto.of(updatedUser);
     }
+
 
     @Operation(summary = "Eliminar un usuario",
             description = "Permite a un usuario autenticado eliminar su propia cuenta.")

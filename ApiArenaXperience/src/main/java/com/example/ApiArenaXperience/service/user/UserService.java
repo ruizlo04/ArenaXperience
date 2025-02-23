@@ -100,6 +100,22 @@ public class UserService {
         return userRepository.save(userToEdit);
     }
 
+    public Usuario editUserByAdmin(String username, EditUserCmd editUserCmd) {
+
+
+        Usuario userToEdit = userRepository.findFirstByUsername(username)
+                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+
+
+        userToEdit.setEmail(editUserCmd.email());
+        userToEdit.setPassword(editUserCmd.password());
+        userToEdit.setPhoneNumber(editUserCmd.phoneNumber());
+
+
+        return userRepository.save(userToEdit);
+    }
+
+
     @Transactional
     public void deleteUser(String username, String authenticatedUsername) {
         if (!authenticatedUsername.equals(username)) {
