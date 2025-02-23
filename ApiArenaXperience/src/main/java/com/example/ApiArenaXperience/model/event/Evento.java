@@ -1,6 +1,7 @@
 package com.example.ApiArenaXperience.model.event;
 
 import com.example.ApiArenaXperience.model.user.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,7 @@ public class Evento {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<Usuario> attendees = new HashSet<>();
+
 
     public void addAttendee(Usuario usuario) {
         attendees.add(usuario);
