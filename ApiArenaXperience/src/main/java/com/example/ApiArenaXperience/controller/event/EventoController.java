@@ -1,7 +1,9 @@
 package com.example.ApiArenaXperience.controller.event;
 
+import com.example.ApiArenaXperience.dto.event.CreateEventRequest;
 import com.example.ApiArenaXperience.dto.event.EventoResponse;
 import com.example.ApiArenaXperience.dto.event.GetListEventoFilterDto;
+import com.example.ApiArenaXperience.model.event.Evento;
 import com.example.ApiArenaXperience.service.event.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,8 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,6 +69,18 @@ public class EventoController {
         }
 
         return ResponseEntity.ok(eventos);
+    }
+
+    @Operation(summary = "Registrar un evento", description = "Crea un nuevo evento en la aplicación")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Evento creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error de validación en los datos")
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/evento/register")
+    public ResponseEntity<EventoResponse> register(@RequestBody @Valid CreateEventRequest createEventRequest) {
+        Evento evento = eventoService.createEvent(createEventRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(EventoResponse.of(evento));
     }
 
 }
