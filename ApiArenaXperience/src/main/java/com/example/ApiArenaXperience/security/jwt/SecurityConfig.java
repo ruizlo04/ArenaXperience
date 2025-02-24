@@ -58,7 +58,6 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http.csrf(csrf -> csrf.disable());
         http.cors(Customizer.withDefaults());
         http.sessionManagement((session) -> session
@@ -68,7 +67,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler)
         );
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(HttpMethod.GET, "/events", "/events/search").permitAll()
+                .requestMatchers(HttpMethod.GET, "/events", "/events/search", "/{username}/tickets").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/error", "/activate/account/").permitAll()
                 .requestMatchers("/me/admin", "/users", "/admin/{username}", "/users/admin/{username}",
                         "/evento/register", "/evento/editar/{name}", "/evento/eliminar/{name}").hasRole("ADMIN")
@@ -78,9 +77,7 @@ public class SecurityConfig {
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated());
 
-
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         http.headers(headers ->
                 headers.frameOptions(frameOptions -> frameOptions.disable()));

@@ -1,5 +1,6 @@
 package com.example.ApiArenaXperience.controller.user;
 
+import com.example.ApiArenaXperience.dto.ticket.TicketResponse;
 import com.example.ApiArenaXperience.dto.user.*;
 import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.security.jwt.access.JwtService;
@@ -148,13 +149,12 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "No tienes permisos para editar este usuario"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/{username}")
     public GetUserDto editUserByAdmin(
             @PathVariable String username,
-            @RequestBody @Valid EditUserCmd editUserCmd,
-            @AuthenticationPrincipal Usuario user) {
-        String authenticatedUsername = user.getUsername();
-        Usuario updatedUser = userService.editUser(username, editUserCmd, authenticatedUsername);
+            @RequestBody @Valid EditUserCmd editUserCmd) {
+        Usuario updatedUser = userService.editUserByAdmin(username, editUserCmd);
         return GetUserDto.of(updatedUser);
     }
 
@@ -187,6 +187,15 @@ public class UserController {
     public ResponseEntity<?> deleteUserByAdmin(@PathVariable String username) {
         userService.deleteUserByAdmin(username);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{username}/tickets")
+    public ResponseEntity<List<TicketResponse>> getUserTickets(
+            @PathVariable String username,
+            @AuthenticationPrincipal Usuario authenticatedUser
+    ) {
+        List<TicketResponse> tickets = userService.getUserTickets(username, authenticatedUser);
+        return ResponseEntity.ok(tickets);
     }
 
 }
