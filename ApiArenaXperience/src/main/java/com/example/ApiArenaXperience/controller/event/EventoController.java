@@ -10,6 +10,7 @@ import com.example.ApiArenaXperience.service.event.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -57,6 +58,17 @@ public class EventoController {
     })
     @GetMapping("/search")
     public ResponseEntity<List<GetListEventoFilterDto>> searchEvents(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Criterios para buscar eventos", required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetListEventoFilterDto.class),
+                            examples = @ExampleObject(value = """
+                                {
+                                    "name": "Concierto Rock",
+                                    "date": "2024-06-15",
+                                    "capacity": 5000
+                                }
+                                """)))
             @RequestBody @Valid GetListEventoFilterDto filter) {
 
         List<GetListEventoFilterDto> eventos = eventoService.buscarEventos(filter.name(), filter.date(), filter.capacity())
@@ -81,8 +93,20 @@ public class EventoController {
             @ApiResponse(responseCode = "400", description = "Error de validación en los datos")
     })
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/register", consumes = {"multipart/form-data"})
     public ResponseEntity<EventoResponse> register(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos del evento a registrar", required = true,
+                    content = @Content(mediaType = "multipart/form-data",
+                            schema = @Schema(implementation = CreateEventRequest.class),
+                            examples = @ExampleObject(value = """
+                                {
+                                    "name": "Final de la Champions",
+                                    "date": "2024-06-01",
+                                    "capacity": 70000,
+                                    "precio": 150.00
+                                }
+                                """)))
             @RequestPart("event") @Valid CreateEventRequest createEventRequest,
             @RequestPart("file") MultipartFile file) {
 
@@ -98,7 +122,18 @@ public class EventoController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/editar/{name}")
-    public ResponseEntity<GetEventoDto> editarEvento(@PathVariable String name, @RequestBody @Valid EditEventoCmd editEventoCmd) {
+    public ResponseEntity<GetEventoDto> editarEvento(@PathVariable String name,
+                                                     @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                                                             description = "Datos para editar el evento", required = true,
+                                                             content = @Content(mediaType = "application/json",
+                                                                     schema = @Schema(implementation = EditEventoCmd.class),
+                                                                     examples = @ExampleObject(value = """
+                                                                                                           {
+                                                                                                               "date": "2023-12-31",
+                                                                                                               "capacity": 6000
+                                                                                                           }
+                                                                                                        """)))
+                                                     @RequestBody @Valid EditEventoCmd editEventoCmd) {
         Evento eventoEditado = eventoService.editarEvento(name, editEventoCmd);
         return ResponseEntity.ok(GetEventoDto.of(eventoEditado));
     }
@@ -124,8 +159,10 @@ public class EventoController {
     })
     @PostMapping("/{eventName}/comprar-ticket")
     public ResponseEntity<GetTicketDto> comprarTicket(
+            @Parameter(description = "Nombre del evento para el cual se comprará el ticket", required = true)
             @PathVariable String eventName,
             @AuthenticationPrincipal Usuario usuario) {
+
         Ticket ticket = eventoService.comprarTicket(eventName, usuario.getId());
         return ResponseEntity.ok(GetTicketDto.of(ticket));
     }
