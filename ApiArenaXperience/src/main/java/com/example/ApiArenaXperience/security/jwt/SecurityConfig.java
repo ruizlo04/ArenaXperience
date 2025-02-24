@@ -67,7 +67,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler)
         );
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(HttpMethod.GET, "/evento/", "/search", "/user/{username}/tickets").permitAll()
+                .requestMatchers(HttpMethod.GET, "/evento/", "/search", "/user/{username}/tickets", "/download/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/user/auth/register", "/user/auth/login", "/user/auth/refresh/token", "/error", "/user/activate/account/").permitAll()
                 .requestMatchers("/user/me/admin", "/user/", "/user/admin/{username}", "/user/delete/admin/{username}",
                         "/evento/register", "/evento/editar/{name}", "/evento/eliminar/{name}", "/evento/{eventName}/tickets").hasRole("ADMIN")

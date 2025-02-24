@@ -45,6 +45,8 @@ public class Evento {
     @JsonIgnore
     private Set<Ticket> tickets = new HashSet<>();
 
+    private String file;
+
     public void addAttendee(Usuario usuario) {
         attendees.add(usuario);
         usuario.getEvents().add(this);
