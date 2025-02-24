@@ -2,11 +2,13 @@ package com.example.ApiArenaXperience.controller.event;
 
 import com.example.ApiArenaXperience.dto.event.*;
 import com.example.ApiArenaXperience.dto.ticket.GetTicketDto;
+import com.example.ApiArenaXperience.dto.ticket.TicketWithUserResponse;
 import com.example.ApiArenaXperience.model.event.Evento;
 import com.example.ApiArenaXperience.model.ticket.Ticket;
 import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.service.event.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,6 +27,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/evento")
 @Tag(name = "Eventos", description = "Endpoints para gestión de eventos")
 public class EventoController {
 
@@ -37,7 +40,7 @@ public class EventoController {
                             schema = @Schema(implementation = EventoResponse.class))),
             @ApiResponse(responseCode = "404", description = "No hay eventos disponibles")
     })
-    @GetMapping("/events")
+    @GetMapping("/")
     public ResponseEntity<List<EventoResponse>> getAllEvents() {
         return ResponseEntity.ok(eventoService.getAllEvents());
     }
@@ -51,7 +54,7 @@ public class EventoController {
             @ApiResponse(responseCode = "204", description = "No se encontraron eventos con los filtros aplicados"),
             @ApiResponse(responseCode = "400", description = "Solicitud inválida, verifique los parámetros enviados")
     })
-    @GetMapping("/events/search")
+    @GetMapping("/search")
     public ResponseEntity<List<GetListEventoFilterDto>> searchEvents(
             @RequestBody @Valid GetListEventoFilterDto filter) {
 
@@ -77,7 +80,7 @@ public class EventoController {
             @ApiResponse(responseCode = "400", description = "Error de validación en los datos")
     })
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/evento/register")
+    @PostMapping("/register")
     public ResponseEntity<EventoResponse> register(@RequestBody @Valid CreateEventRequest createEventRequest) {
         Evento evento = eventoService.createEvent(createEventRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(EventoResponse.of(evento));
@@ -89,7 +92,7 @@ public class EventoController {
             @ApiResponse(responseCode = "404", description = "Evento no encontrado")
     })
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/evento/editar/{name}")
+    @PutMapping("/editar/{name}")
     public ResponseEntity<GetEventoDto> editarEvento(@PathVariable String name, @RequestBody @Valid EditEventoCmd editEventoCmd) {
         Evento eventoEditado = eventoService.editarEvento(name, editEventoCmd);
         return ResponseEntity.ok(GetEventoDto.of(eventoEditado));
@@ -102,7 +105,7 @@ public class EventoController {
             @ApiResponse(responseCode = "404", description = "Evento no encontrado")
     })
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/evento/eliminar/{name}")
+    @DeleteMapping("/eliminar/{name}")
     public ResponseEntity<?> eliminarEvento(@PathVariable String name) {
         eventoService.deleteEvent(name);
         return ResponseEntity.ok().build();
@@ -114,13 +117,35 @@ public class EventoController {
             @ApiResponse(responseCode = "404", description = "Evento no encontrado"),
             @ApiResponse(responseCode = "400", description = "El usuario ya está registrado en el evento")
     })
-    @PostMapping("/evento/{eventName}/comprar-ticket")
+    @PostMapping("/{eventName}/comprar-ticket")
     public ResponseEntity<GetTicketDto> comprarTicket(
             @PathVariable String eventName,
             @AuthenticationPrincipal Usuario usuario) {
         Ticket ticket = eventoService.comprarTicket(eventName, usuario.getId());
         return ResponseEntity.ok(GetTicketDto.of(ticket));
     }
+
+    @Operation(
+            summary = "Obtener tickets de un evento",
+            description = "Recupera la lista de tickets asociados a un evento específico. "
+                    + "Solo los administradores pueden acceder a esta información."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de tickets obtenida exitosamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = TicketWithUserResponse.class))),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado - Se requieren permisos de administrador"),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado")
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{eventName}/tickets")
+    public ResponseEntity<List<TicketWithUserResponse>> getTicketsForEvent(
+            @Parameter(description = "Nombre del evento para obtener los tickets", required = true)
+            @PathVariable String eventName
+    ) {
+        List<TicketWithUserResponse> tickets = eventoService.getTicketsForEvent(eventName);
+        return ResponseEntity.ok(tickets);
+    }
+
 
 
 }

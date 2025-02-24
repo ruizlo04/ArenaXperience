@@ -1,5 +1,6 @@
 package com.example.ApiArenaXperience.service.user;
 
+import com.example.ApiArenaXperience.dto.ticket.TicketResponse;
 import com.example.ApiArenaXperience.dto.user.CreateUserRequest;
 import com.example.ApiArenaXperience.dto.user.EditUserCmd;
 import com.example.ApiArenaXperience.dto.user.UserResponse;
@@ -85,6 +86,19 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<TicketResponse> getUserTickets(String username, Usuario authenticatedUser) {
+        if (!authenticatedUser.getRoles().contains(UserRole.ADMIN) && !authenticatedUser.getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para ver estos tickets");
+        }
+
+        Usuario user = userRepository.findByUsernameWithTickets(username)
+                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+
+        return user.getTickets().stream()
+                .map(TicketResponse::of)
+                .collect(Collectors.toList());
+    }
+
     public Usuario editUser(String username, EditUserCmd editUserCmd, String authenticatedUsername) {
         if (!authenticatedUsername.equals(username)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para editar este usuario");
@@ -96,6 +110,21 @@ public class UserService {
         userToEdit.setEmail(editUserCmd.email());
         userToEdit.setPassword(editUserCmd.password());
         userToEdit.setPhoneNumber(editUserCmd.phoneNumber());
+
+        return userRepository.save(userToEdit);
+    }
+
+    public Usuario editUserByAdmin(String username, EditUserCmd editUserCmd) {
+
+
+        Usuario userToEdit = userRepository.findFirstByUsername(username)
+                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+
+
+        userToEdit.setEmail(editUserCmd.email());
+        userToEdit.setPassword(editUserCmd.password());
+        userToEdit.setPhoneNumber(editUserCmd.phoneNumber());
+
 
         return userRepository.save(userToEdit);
     }
