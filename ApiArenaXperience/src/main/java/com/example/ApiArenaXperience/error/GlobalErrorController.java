@@ -127,4 +127,14 @@ public class GlobalErrorController
 
 
     }
+    @ExceptionHandler(EntidadNotFound.class)
+    public ProblemDetail handleEntityNotFoundException(EntidadNotFound ex) {
+        ProblemDetail result = ProblemDetail
+                .forStatusAndDetail(ex.getStatus(), ex.getMessage());
+        result.setTitle("Entidad no encontrada");
+        result.setProperty("author", "Manuel");
+
+        return result;
+    }
+
 }
