@@ -10,6 +10,7 @@ public record EventoResponse(
         String name,
         LocalDate date,
         int capacity,
+        double price,
         String fotoName
 ) {
 
@@ -19,6 +20,7 @@ public record EventoResponse(
                 event.getName(),
                 event.getDate(),
                 event.getCapacity(),
+                event.getPrice(),
                 event.getFile()
         );
     }

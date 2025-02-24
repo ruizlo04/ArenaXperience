@@ -77,6 +77,7 @@ public class EventoService {
                 .name(createEventRequest.name())
                 .date(createEventRequest.date())
                 .capacity(createEventRequest.capacity())
+                .price(createEventRequest.precio())
                 .file(getImageUrl(imageUrls))
                 .build();
 
