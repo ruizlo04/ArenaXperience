@@ -3,6 +3,7 @@ package com.example.ApiArenaXperience.service.event;
 import com.example.ApiArenaXperience.dto.event.CreateEventRequest;
 import com.example.ApiArenaXperience.dto.event.EditEventoCmd;
 import com.example.ApiArenaXperience.dto.event.EventoResponse;
+import com.example.ApiArenaXperience.dto.ticket.TicketWithUserResponse;
 import com.example.ApiArenaXperience.error.event.EventNotFoundException;
 import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
 import com.example.ApiArenaXperience.model.event.Evento;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,18 @@ public class EventoService {
 
         return events.stream()
                 .map(EventoResponse::of)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<TicketWithUserResponse> getTicketsForEvent(String eventName) {
+        Evento evento = eventoRepository.findByName(eventName)
+                .orElseThrow(() -> new EventNotFoundException("Evento no encontrado con nombre: " + eventName));
+
+        Set<Ticket> tickets = evento.getTickets();
+
+        return tickets.stream()
+                .map(TicketWithUserResponse::of)
                 .collect(Collectors.toList());
     }
 

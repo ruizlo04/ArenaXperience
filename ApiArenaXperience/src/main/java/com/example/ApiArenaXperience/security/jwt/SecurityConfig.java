@@ -67,12 +67,12 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler)
         );
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(HttpMethod.GET, "/events", "/events/search", "/{username}/tickets").permitAll()
-                .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/error", "/activate/account/").permitAll()
-                .requestMatchers("/me/admin", "/users", "/admin/{username}", "/users/admin/{username}",
-                        "/evento/register", "/evento/editar/{name}", "/evento/eliminar/{name}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/{username}").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/users/{username}").authenticated()
+                .requestMatchers(HttpMethod.GET, "/evento/", "/search", "/user/{username}/tickets").permitAll()
+                .requestMatchers(HttpMethod.POST, "/user/auth/register", "/user/auth/login", "/user/auth/refresh/token", "/error", "/user/activate/account/").permitAll()
+                .requestMatchers("/user/me/admin", "/user/", "/user/admin/{username}", "/user/delete/admin/{username}",
+                        "/evento/register", "/evento/editar/{name}", "/evento/eliminar/{name}", "/evento/{eventName}/tickets").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/user/{username}").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/user/{username}").authenticated()
                 .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated());

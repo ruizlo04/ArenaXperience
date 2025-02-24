@@ -31,6 +31,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/user")
 @Tag(name = "Usuarios", description = "Endpoints para gestión de usuarios")
 public class UserController {
 
@@ -120,7 +121,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/users")
+    @GetMapping("/")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
@@ -165,7 +166,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este usuario"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @DeleteMapping("/users/{username}")
+    @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteUser(
             @Parameter(description = "Nombre de usuario del usuario a eliminar", required = true)
             @PathVariable String username,
@@ -182,20 +183,35 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este usuario"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @DeleteMapping("/users/admin/{username}")
+    @DeleteMapping("/delete/admin/{username}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUserByAdmin(@PathVariable String username) {
         userService.deleteUserByAdmin(username);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Obtener tickets de un usuario",
+            description = "Recupera la lista de tickets asociados a un usuario específico. "
+                    + "El usuario autenticado debe tener los permisos necesarios para acceder a esta información."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de tickets obtenida exitosamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = TicketResponse.class))),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado - El usuario no tiene permisos para ver estos tickets"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     @GetMapping("/{username}/tickets")
     public ResponseEntity<List<TicketResponse>> getUserTickets(
+            @Parameter(description = "Nombre de usuario del propietario de los tickets", required = true)
             @PathVariable String username,
+
+            @Parameter(description = "Usuario autenticado que realiza la solicitud", required = true)
             @AuthenticationPrincipal Usuario authenticatedUser
     ) {
         List<TicketResponse> tickets = userService.getUserTickets(username, authenticatedUser);
         return ResponseEntity.ok(tickets);
     }
+
 
 }
