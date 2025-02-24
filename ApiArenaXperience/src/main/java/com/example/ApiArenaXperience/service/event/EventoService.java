@@ -6,6 +6,8 @@ import com.example.ApiArenaXperience.dto.event.EventoResponse;
 import com.example.ApiArenaXperience.dto.ticket.TicketWithUserResponse;
 import com.example.ApiArenaXperience.error.event.EventNotFoundException;
 import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
+import com.example.ApiArenaXperience.files.model.FileMetadata;
+import com.example.ApiArenaXperience.files.service.StorageService;
 import com.example.ApiArenaXperience.model.event.Evento;
 import com.example.ApiArenaXperience.model.ticket.Ticket;
 import com.example.ApiArenaXperience.model.user.Usuario;
@@ -17,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +36,7 @@ public class EventoService {
     private final EventRepository eventoRepository;
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
+    private final StorageService storageService;
 
     public List<EventoResponse> getAllEvents() {
         List<Evento> events = eventoRepository.findAll();
@@ -62,15 +67,28 @@ public class EventoService {
         return eventoRepository.findAll(spec);
     }
 
-    public Evento createEvent(CreateEventRequest createEventRequest){
+    public Evento createEvent(CreateEventRequest createEventRequest, MultipartFile file){
+
+        FileMetadata fileMetadata = storageService.store(file);
+
+        String imageUrls = fileMetadata.getFilename();
 
         Evento evento = Evento.builder()
                 .name(createEventRequest.name())
                 .date(createEventRequest.date())
                 .capacity(createEventRequest.capacity())
+                .price(createEventRequest.precio())
+                .file(getImageUrl(imageUrls))
                 .build();
 
         return eventoRepository.save(evento);
+    }
+
+    public String getImageUrl(String filename) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download/")
+                .path(filename)
+                .toUriString();
     }
 
     public Evento editarEvento(String name, EditEventoCmd editEventoCmd) {

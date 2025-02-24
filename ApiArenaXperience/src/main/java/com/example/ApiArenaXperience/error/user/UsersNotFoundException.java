@@ -1,7 +1,11 @@
 package com.example.ApiArenaXperience.error.user;
 
-public class UsersNotFoundException extends RuntimeException {
+import com.example.ApiArenaXperience.error.EntidadNotFound;
+import org.springframework.http.HttpStatus;
+
+public class UsersNotFoundException extends EntidadNotFound {
     public UsersNotFoundException(String message) {
-        super(message);
+        super(message, HttpStatus.NOT_FOUND);
     }
+
 }

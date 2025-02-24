@@ -1,6 +1,7 @@
 package com.example.ApiArenaXperience.dto.event;
 
 import com.example.ApiArenaXperience.model.event.Evento;
+import com.example.ApiArenaXperience.validation.ValidPrecio;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,8 @@ public record CreateEventRequest(
         LocalDate date,
         @Min(value = 500, message = "La capacidad del aforo debe ser mínimo 500.")
         @Max(value = 800, message = "La capacidad no puede superar los 800.")
-        int capacity
+        int capacity,
+        @ValidPrecio
+        double precio
 ) {
 }

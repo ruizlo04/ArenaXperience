@@ -9,7 +9,9 @@ public record EventoResponse(
         UUID id,
         String name,
         LocalDate date,
-        int capacity
+        int capacity,
+        double price,
+        String fotoName
 ) {
 
     public static EventoResponse of (Evento event) {
@@ -17,7 +19,9 @@ public record EventoResponse(
                 event.getId(),
                 event.getName(),
                 event.getDate(),
-                event.getCapacity()
+                event.getCapacity(),
+                event.getPrice(),
+                event.getFile()
         );
     }
 }

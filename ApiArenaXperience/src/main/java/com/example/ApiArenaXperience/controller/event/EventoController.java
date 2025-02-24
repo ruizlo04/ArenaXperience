@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -80,11 +81,15 @@ public class EventoController {
             @ApiResponse(responseCode = "400", description = "Error de validación en los datos")
     })
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/register")
-    public ResponseEntity<EventoResponse> register(@RequestBody @Valid CreateEventRequest createEventRequest) {
-        Evento evento = eventoService.createEvent(createEventRequest);
+    @PostMapping(value = "/register")
+    public ResponseEntity<EventoResponse> register(
+            @RequestPart("event") @Valid CreateEventRequest createEventRequest,
+            @RequestPart("file") MultipartFile file) {
+
+        Evento evento = eventoService.createEvent(createEventRequest, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(EventoResponse.of(evento));
     }
+
 
     @Operation(summary = "Editar un evento", description = "Permite modificar la fecha y la capacidad de un evento existente por su nombre.")
     @ApiResponses({
