@@ -6,6 +6,7 @@ import com.example.ApiArenaXperience.dto.event.EventoResponse;
 import com.example.ApiArenaXperience.dto.ticket.TicketWithUserResponse;
 import com.example.ApiArenaXperience.error.event.EventNotFoundException;
 import com.example.ApiArenaXperience.error.ticket.TicketsNotFoundException;
+import com.example.ApiArenaXperience.error.user.UserRoleException;
 import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
 import com.example.ApiArenaXperience.files.model.FileMetadata;
 import com.example.ApiArenaXperience.files.service.StorageService;
@@ -155,5 +156,27 @@ public class EventoService {
     }
 
 
+    @Transactional
+    public void eliminarTicket(UUID ticketId, UUID usuarioId, boolean isAdmin) {
+        Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
+
+        if (ticketOptional.isEmpty()) {
+            throw new TicketsNotFoundException("No se ha encontrado el ticket con ID: " + ticketId);
+        }
+
+        Ticket ticket = ticketOptional.get();
+
+        if (!isAdmin && !ticket.getUser().getId().equals(usuarioId)) {
+            throw new UserRoleException("No tienes permisos para eliminar este ticket.");
+        }
+
+        Evento evento = ticket.getEvent();
+        Usuario usuario = ticket.getUser();
+
+        evento.removeAttendee(usuario);
+        eventoRepository.save(evento);
+
+        ticketRepository.delete(ticket);
+    }
 
 }

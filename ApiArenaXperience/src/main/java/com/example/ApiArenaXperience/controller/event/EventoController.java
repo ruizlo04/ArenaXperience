@@ -190,6 +190,26 @@ public class EventoController {
         return ResponseEntity.ok(tickets);
     }
 
+    @Operation(
+            summary = "Eliminar un ticket",
+            description = "Permite a un usuario eliminar sus propios tickets o a un administrador eliminar cualquier ticket."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ticket eliminado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Ticket no encontrado"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado - No tienes permisos para eliminar este ticket")
+    })
+    @DeleteMapping("/ticket/{ticketId}")
+    public ResponseEntity<?> eliminarTicket(
+            @Parameter(description = "ID del ticket que se desea eliminar", required = true)
+            @PathVariable UUID ticketId,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        boolean isAdmin = usuario.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
+        eventoService.eliminarTicket(ticketId, usuario.getId(), isAdmin);
+        return ResponseEntity.ok().build();
+    }
 
 }
