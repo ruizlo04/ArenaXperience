@@ -1,6 +1,7 @@
 package com.example.ApiArenaXperience.controller.chat;
 
 import com.example.ApiArenaXperience.dto.chat.CreateChatDto;
+import com.example.ApiArenaXperience.dto.chat.EditChatCmd;
 import com.example.ApiArenaXperience.model.chat.Chat;
 import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.service.chat.ChatService;
@@ -63,6 +64,17 @@ public class ChatController {
     }
 
 
+    @Operation(summary = "Editar un mensaje", description = "Permite al remitente modificar el contenido de su mensaje.")
+    @ApiResponse(responseCode = "200", description = "Mensaje editado exitosamente")
+    @PutMapping("/edit/{chatId}")
+    public ResponseEntity<CreateChatDto> editMessage(
+            @PathVariable UUID chatId,
+            @RequestBody EditChatCmd editChatCmd,
+            @AuthenticationPrincipal Usuario sender) {
+
+        Chat chat = chatService.editMessage(sender.getId(), chatId, editChatCmd.message());
+        return ResponseEntity.ok(CreateChatDto.of(chat));
+    }
 
 
 }

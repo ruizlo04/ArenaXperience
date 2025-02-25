@@ -1,6 +1,8 @@
 package com.example.ApiArenaXperience.service.chat;
 
 
+import com.example.ApiArenaXperience.error.chat.ChatNotFoundException;
+import com.example.ApiArenaXperience.error.user.UserRoleException;
 import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
 import com.example.ApiArenaXperience.model.chat.Chat;
 import com.example.ApiArenaXperience.model.user.Usuario;
@@ -59,6 +61,22 @@ public class ChatService {
         }
 
         return chatRepository.findBySenderOrReceiver(user.get(), user.get(), pageable);
+    }
+
+    @Transactional
+    public Chat editMessage(UUID userId, UUID chatId, String newMessage) {
+        Optional<Chat> chat = chatRepository.findById(chatId);
+
+        if (chat.isEmpty()){
+            throw new ChatNotFoundException("No se ha encontrado dicho chat");
+        }
+
+        if (!chat.get().getSender().getId().equals(userId)) {
+            throw new UserRoleException("No tienes permiso para editar este mensaje");
+        }
+
+        chat.get().setMessage(newMessage);
+        return chatRepository.save(chat.get());
     }
 
 
