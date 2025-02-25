@@ -116,11 +116,34 @@ public class ReviewController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<Optional<ReviewResponseDto>> editarResenya(
             @PathVariable UUID id,
-            @RequestBody @Valid EditResenyaCmd editResenyaCmd,
+            @RequestBody EditResenyaCmd editResenyaCmd,
             @AuthenticationPrincipal Usuario usuarioAutenticado) {
 
         Optional<ReviewResponseDto> updatedReview = reviewService.editarResenya(id, editResenyaCmd, usuarioAutenticado);
         return ResponseEntity.ok(updatedReview);
     }
+
+    @Operation(summary = "Eliminar una reseña",
+            description = "Permite a los usuarios eliminar una reseña específica. Solo el propietario de la reseña o un usuario con rol ADMIN pueden realizar esta acción.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Reseña eliminada exitosamente",
+                    content = @Content(schema = @Schema(hidden = true))
+            ),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado. Solo el propietario o un administrador pueden eliminar la reseña",
+                    content = @Content(schema = @Schema(hidden = true))
+            ),
+            @ApiResponse(responseCode = "404", description = "Reseña no encontrada",
+                    content = @Content(schema = @Schema(hidden = true))
+            )
+    })
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarResenya(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal Usuario usuarioAutenticado) {
+
+        reviewService.eliminarResenya(id, usuarioAutenticado);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
