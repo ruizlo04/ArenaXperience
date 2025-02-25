@@ -1,8 +1,10 @@
 package com.example.ApiArenaXperience.service.review;
 
+import com.example.ApiArenaXperience.dto.review.EditResenyaCmd;
 import com.example.ApiArenaXperience.dto.review.ReviewRequestDto;
 import com.example.ApiArenaXperience.dto.review.ReviewResponseDto;
 import com.example.ApiArenaXperience.error.event.EventNotFoundException;
+import com.example.ApiArenaXperience.error.review.ResenyaNotFoundException;
 import com.example.ApiArenaXperience.error.user.UserRoleException;
 import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
 import com.example.ApiArenaXperience.model.event.Evento;
@@ -19,9 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 
 @Service
@@ -84,4 +85,30 @@ public class ReviewService {
 
         return resenyasPage.map(ReviewResponseDto::of);
     }
+
+    public Optional<ReviewResponseDto> editarResenya(UUID id, EditResenyaCmd editResenyaCmd, Usuario usuarioAutenticado) {
+        Optional<Review> reviewOpt = reviewRepository.findById(id);
+
+        if (reviewOpt.isEmpty()) {
+            throw new ResenyaNotFoundException("No se ha encontrado esa reseña");
+        }
+
+        Review review = reviewOpt.get();
+
+        boolean esPropietario = review.getUser().getId().equals(usuarioAutenticado.getId());
+        boolean esAdmin = usuarioAutenticado.getRoles().contains(UserRole.ADMIN);
+
+        if (!esPropietario && !esAdmin) {
+            throw new UserRoleException("No tienes permiso para editar esta reseña");
+        }
+
+        review.setRating(editResenyaCmd.rating());
+        review.setComment(editResenyaCmd.comment());
+
+        reviewRepository.save(review);
+
+        return Optional.of(ReviewResponseDto.of(review));
+    }
+
+
 }
