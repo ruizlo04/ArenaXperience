@@ -5,6 +5,7 @@ import com.example.ApiArenaXperience.dto.event.EditEventoCmd;
 import com.example.ApiArenaXperience.dto.event.EventoResponse;
 import com.example.ApiArenaXperience.dto.ticket.TicketWithUserResponse;
 import com.example.ApiArenaXperience.error.event.EventNotFoundException;
+import com.example.ApiArenaXperience.error.ticket.TicketsNotFoundException;
 import com.example.ApiArenaXperience.error.user.UsersNotFoundException;
 import com.example.ApiArenaXperience.files.model.FileMetadata;
 import com.example.ApiArenaXperience.files.service.StorageService;
@@ -112,8 +113,12 @@ public class EventoService {
     public void deleteEvent(String name) {
         Optional<Evento> evento = eventoRepository.findByName(name);
 
-        if (evento.isEmpty()){
+        if (evento.isEmpty()) {
             throw new EventNotFoundException("No se ha encontrado el evento");
+        }
+
+        if (!evento.get().getTickets().isEmpty()) {
+            throw new TicketsNotFoundException("No se puede eliminar un evento con tickets asociados");
         }
 
         eventoRepository.delete(evento.get());
