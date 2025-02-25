@@ -52,10 +52,13 @@ public class EventoService {
 
     @Transactional
     public List<TicketWithUserResponse> getTicketsForEvent(String eventName) {
-        Evento evento = eventoRepository.findByName(eventName)
-                .orElseThrow(() -> new EventNotFoundException("Evento no encontrado con nombre: " + eventName));
+        Optional<Evento> evento = eventoRepository.findByName(eventName);
 
-        Set<Ticket> tickets = evento.getTickets();
+        if (evento.isEmpty()){
+            throw new EventNotFoundException("No se han encontrado eventos");
+        }
+
+        Set<Ticket> tickets = evento.get().getTickets();
 
         return tickets.stream()
                 .map(TicketWithUserResponse::of)
@@ -93,8 +96,9 @@ public class EventoService {
 
     public Evento editarEvento(String name, EditEventoCmd editEventoCmd) {
         Optional<Evento> optionalEvento = eventoRepository.findByName(name);
+
         if (optionalEvento.isEmpty()) {
-            throw new RuntimeException("Evento no encontrado con nombre: " + name);
+            throw new EventNotFoundException("Evento no encontrado con nombre: " + name);
         }
 
         Evento evento = optionalEvento.get();
@@ -106,33 +110,41 @@ public class EventoService {
 
     @Transactional
     public void deleteEvent(String name) {
-        Evento evento = eventoRepository.findByName(name)
-                .orElseThrow(() -> new EventNotFoundException("Evento no encontrado con nombre: " + name));
+        Optional<Evento> evento = eventoRepository.findByName(name);
 
-        eventoRepository.delete(evento);
+        if (evento.isEmpty()){
+            throw new EventNotFoundException("No se ha encontrado el evento");
+        }
+
+        eventoRepository.delete(evento.get());
     }
 
     @Transactional
     public Ticket comprarTicket(String eventName, UUID usuarioId) {
-        Usuario usuario = userRepository.findByIdWithEvents(usuarioId)
-                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+        Optional<Usuario> usuario = userRepository.findByIdWithEvents(usuarioId);
+        Optional<Evento> evento = eventoRepository.findByName(eventName);
 
-        Evento evento = eventoRepository.findByName(eventName)
-                .orElseThrow(() -> new EventNotFoundException("Evento no encontrado"));
+        if (usuario.isEmpty()){
+            throw new UsersNotFoundException("Usuario no encontrado");
+        }
 
-        if (evento.getAttendees().contains(usuario)) {
+        if (evento.isEmpty()){
+            throw new EventNotFoundException("Evento no encontrado");
+        }
+
+        if (evento.get().getAttendees().contains(usuario.get())) {
             throw new RuntimeException("El usuario ya está registrado en este evento.");
         }
 
         Ticket ticket = Ticket.builder()
-                .event(evento)
-                .user(usuario)
+                .event(evento.get())
+                .user(usuario.get())
                 .build();
 
         ticketRepository.save(ticket);
 
-        evento.addAttendee(usuario);
-        eventoRepository.save(evento);
+        evento.get().addAttendee(usuario.get());
+        eventoRepository.save(evento.get());
 
         return ticket;
     }

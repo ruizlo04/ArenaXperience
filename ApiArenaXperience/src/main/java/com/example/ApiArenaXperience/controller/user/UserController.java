@@ -46,10 +46,17 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Error de validación en los datos")
     })
     @PostMapping("/auth/register")
-    public ResponseEntity<UserResponse> register(@RequestBody @Valid CreateUserRequest createUserRequest) {
+    public ResponseEntity<UserResponse> register(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos necesarios para registrar un usuario",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = CreateUserRequest.class))
+            )
+            @RequestBody @Valid CreateUserRequest createUserRequest) {
         Usuario user = userService.createUser(createUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.of(user));
     }
+
 
     @Operation(summary = "Iniciar sesión", description = "Autentica un usuario y devuelve tokens de acceso y refresco")
     @ApiResponses({
@@ -57,7 +64,13 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Credenciales inválidas")
     })
     @PostMapping("/auth/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Credenciales para iniciar sesión",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = LoginRequest.class))
+            )
+            @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.username(),
@@ -75,6 +88,7 @@ public class UserController {
                 .body(UserResponse.of(user, accessToken, refreshToken.getToken()));
     }
 
+
     @Operation(summary = "Refrescar token", description = "Genera un nuevo token de acceso utilizando un refresh token válido.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Nuevo token de acceso generado correctamente"),
@@ -82,7 +96,13 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "No autorizado")
     })
     @PostMapping("/auth/refresh/token")
-    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest req) {
+    public ResponseEntity<?> refreshToken(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Token de refresco para generar un nuevo access token",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = RefreshTokenRequest.class))
+            )
+            @RequestBody RefreshTokenRequest req) {
         String token = req.refreshToken();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(refreshTokenService.refreshToken(token));
@@ -94,7 +114,13 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Token inválido o expirado")
     })
     @PostMapping("/activate/account/")
-    public ResponseEntity<?> activateAccount(@RequestBody ActivateAccountRequest req) {
+    public ResponseEntity<?> activateAccount(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Token de activación enviado al usuario",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = ActivateAccountRequest.class))
+            )
+            @RequestBody ActivateAccountRequest req) {
         String token = req.token();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserResponse.of(userService.activateAccount(token)));

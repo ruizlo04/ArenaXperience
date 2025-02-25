@@ -132,7 +132,7 @@ public class GlobalErrorController
         ProblemDetail result = ProblemDetail
                 .forStatusAndDetail(ex.getStatus(), ex.getMessage());
         result.setTitle("Entidad no encontrada");
-        result.setProperty("author", "Manuel");
+        result.setProperty("author", "Carlos");
 
         return result;
     }

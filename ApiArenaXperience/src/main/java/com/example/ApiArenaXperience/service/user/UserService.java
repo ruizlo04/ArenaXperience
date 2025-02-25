@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -91,10 +92,13 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para ver estos tickets");
         }
 
-        Usuario user = userRepository.findByUsernameWithTickets(username)
-                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+        Optional<Usuario> user = userRepository.findByUsernameWithTickets(username);
 
-        return user.getTickets().stream()
+        if (user.isEmpty()){
+            throw new UsersNotFoundException("No se ha encontrado ese usuario");
+        }
+
+        return user.get().getTickets().stream()
                 .map(TicketResponse::of)
                 .collect(Collectors.toList());
     }
@@ -104,29 +108,34 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para editar este usuario");
         }
 
-        Usuario userToEdit = userRepository.findFirstByUsername(username)
-                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+        Optional<Usuario> userToEdit = userRepository.findFirstByUsername(username);
 
-        userToEdit.setEmail(editUserCmd.email());
-        userToEdit.setPassword(editUserCmd.password());
-        userToEdit.setPhoneNumber(editUserCmd.phoneNumber());
+        if (userToEdit.isEmpty()){
+            throw new UsersNotFoundException("No se ha encontrado ese Usuario");
+        }
 
-        return userRepository.save(userToEdit);
+        userToEdit.get().setEmail(editUserCmd.email());
+        userToEdit.get().setPassword(editUserCmd.password());
+        userToEdit.get().setPhoneNumber(editUserCmd.phoneNumber());
+
+        return userRepository.save(userToEdit.get());
     }
 
     public Usuario editUserByAdmin(String username, EditUserCmd editUserCmd) {
 
 
-        Usuario userToEdit = userRepository.findFirstByUsername(username)
-                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+        Optional<Usuario> userToEdit = userRepository.findFirstByUsername(username);
+
+        if (userToEdit.isEmpty()){
+            throw new UsersNotFoundException("No se ha encontrado ese Usuario");
+        }
+
+        userToEdit.get().setEmail(editUserCmd.email());
+        userToEdit.get().setPassword(editUserCmd.password());
+        userToEdit.get().setPhoneNumber(editUserCmd.phoneNumber());
 
 
-        userToEdit.setEmail(editUserCmd.email());
-        userToEdit.setPassword(editUserCmd.password());
-        userToEdit.setPhoneNumber(editUserCmd.phoneNumber());
-
-
-        return userRepository.save(userToEdit);
+        return userRepository.save(userToEdit.get());
     }
 
     @Transactional
@@ -135,21 +144,27 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para eliminar este usuario");
         }
 
-        Usuario userToDelete = userRepository.findFirstByUsername(username)
-                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+        Optional<Usuario> userToDelete = userRepository.findFirstByUsername(username);
 
-        refreshTokenRepository.deleteByUserId(userToDelete.getId());
+        if (userToDelete.isEmpty()){
+            throw new UsersNotFoundException("No se ha encontrado ese Usuario");
+        }
 
-        userRepository.delete(userToDelete);
+        refreshTokenRepository.deleteByUserId(userToDelete.get().getId());
+
+        userRepository.delete(userToDelete.get());
     }
 
     @Transactional
     public void deleteUserByAdmin(String username) {
-        Usuario userToDelete = userRepository.findFirstByUsername(username)
-                .orElseThrow(() -> new UsersNotFoundException("Usuario no encontrado"));
+        Optional<Usuario> userToDelete = userRepository.findFirstByUsername(username);
 
-        refreshTokenRepository.deleteByUserId(userToDelete.getId());
-        userRepository.delete(userToDelete);
+        if (userToDelete.isEmpty()){
+            throw new UsersNotFoundException("No se ha encontrado ese Usuario");
+        }
+
+        refreshTokenRepository.deleteByUserId(userToDelete.get().getId());
+        userRepository.delete(userToDelete.get());
     }
 
 
