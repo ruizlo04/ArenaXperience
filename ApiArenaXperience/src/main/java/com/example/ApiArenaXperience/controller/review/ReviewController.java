@@ -1,8 +1,10 @@
 package com.example.ApiArenaXperience.controller.review;
 
 import com.example.ApiArenaXperience.dto.event.EventoResponse;
+import com.example.ApiArenaXperience.dto.review.EditResenyaCmd;
 import com.example.ApiArenaXperience.dto.review.ReviewRequestDto;
 import com.example.ApiArenaXperience.dto.review.ReviewResponseDto;
+import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.service.review.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,9 +19,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -97,4 +102,25 @@ public class ReviewController {
         Pageable pageable = PageRequest.of(page, size);
         return reviewService.obtenerTodasLasResenas(pageable);
     }
+
+    @Operation(summary = "Editar una reseña",
+            description = "Permite a los usuarios editar la calificación y el comentario de una reseña existente.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Reseña editada exitosamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReviewResponseDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Reseña no encontrada",
+                    content = @Content(schema = @Schema(hidden = true)))
+    })
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Optional<ReviewResponseDto>> editarResenya(
+            @PathVariable UUID id,
+            @RequestBody @Valid EditResenyaCmd editResenyaCmd,
+            @AuthenticationPrincipal Usuario usuarioAutenticado) {
+
+        Optional<ReviewResponseDto> updatedReview = reviewService.editarResenya(id, editResenyaCmd, usuarioAutenticado);
+        return ResponseEntity.ok(updatedReview);
+    }
+
 }
