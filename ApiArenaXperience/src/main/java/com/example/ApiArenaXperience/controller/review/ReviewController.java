@@ -13,8 +13,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,5 +63,38 @@ public class ReviewController {
             @RequestBody @Valid ReviewRequestDto reviewRequestDto) {
         ReviewResponseDto reviewResponseDto = reviewService.crearReview(reviewRequestDto);
         return ResponseEntity.ok(reviewResponseDto);
+    }
+
+    @Operation(summary = "Obtener reseñas por evento",
+            description = "Recupera una lista paginada de reseñas para un evento específico.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de reseñas recuperada exitosamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReviewResponseDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado",
+                    content = @Content(schema = @Schema(hidden = true)))
+    })
+    @GetMapping("/evento/{eventoName}")
+    public Page<ReviewResponseDto> obtenerResenasPorEvento(
+            Pageable pageable,
+            @PathVariable String eventoName) {
+        return reviewService.obtenerResenasPorEvento(pageable, eventoName);
+    }
+
+    @Operation(summary = "Obtener todas las reseñas",
+            description = "Recupera una lista paginada de todas las reseñas disponibles.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de reseñas recuperada exitosamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReviewResponseDto.class))
+            )
+    })
+    @GetMapping("/evento/")
+    public Page<ReviewResponseDto> obtenerTodasLasResenas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return reviewService.obtenerTodasLasResenas(pageable);
     }
 }
