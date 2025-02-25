@@ -60,7 +60,7 @@ public class UserService {
                 .activationToken(generateRandomActivationCode())
                 .createdAt(Instant.now())
                 .enabled(false)
-                .roles(Collections.singleton(createUserRequest.rol() != null ? createUserRequest.rol() : UserRole.USER))
+                .roles(Collections.singleton(UserRole.USER))
                 .build();
 
         try {
