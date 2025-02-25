@@ -6,20 +6,21 @@ import com.example.ApiArenaXperience.model.chat.Chat;
 import com.example.ApiArenaXperience.model.user.Usuario;
 import com.example.ApiArenaXperience.service.chat.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/chat")
@@ -69,11 +70,32 @@ public class ChatController {
     @PutMapping("/edit/{chatId}")
     public ResponseEntity<CreateChatDto> editMessage(
             @PathVariable UUID chatId,
-            @RequestBody EditChatCmd editChatCmd,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos para editar el mensaje", required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EditChatCmd.class),
+                            examples = @ExampleObject(value = """
+                                {
+                                    "message": "Nuevo contenido del mensaje"
+                                }
+                                """)))
+            @RequestBody @Valid EditChatCmd editChatCmd,
             @AuthenticationPrincipal Usuario sender) {
 
         Chat chat = chatService.editMessage(sender.getId(), chatId, editChatCmd.message());
         return ResponseEntity.ok(CreateChatDto.of(chat));
+    }
+
+
+    @Operation(summary = "Eliminar un mensaje", description = "Permite a un usuario eliminar un mensaje que haya enviado.")
+    @ApiResponse(responseCode = "204", description = "Mensaje eliminado exitosamente")
+    @DeleteMapping("/delete/{chatId}")
+    public ResponseEntity<?> deleteMessage(
+            @PathVariable UUID chatId,
+            @AuthenticationPrincipal Usuario sender) {
+
+        chatService.deleteMessage(sender.getId(), chatId);
+        return ResponseEntity.noContent().build();
     }
 
 

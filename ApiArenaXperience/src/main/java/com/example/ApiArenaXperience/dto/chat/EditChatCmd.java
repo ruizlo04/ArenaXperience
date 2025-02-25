@@ -1,4 +1,9 @@
 package com.example.ApiArenaXperience.dto.chat;
 
-public record EditChatCmd(String message) {
+import jakarta.validation.constraints.NotBlank;
+
+public record EditChatCmd(
+        @NotBlank(message = "El mensaje no puede estar vacío")
+        String message
+) {
 }

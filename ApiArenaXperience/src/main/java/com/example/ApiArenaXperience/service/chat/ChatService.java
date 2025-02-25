@@ -79,5 +79,20 @@ public class ChatService {
         return chatRepository.save(chat.get());
     }
 
+    @Transactional
+    public void deleteMessage(UUID userId, UUID chatId) {
+        Optional<Chat> chat = chatRepository.findById(chatId);
+
+        if (chat.isEmpty()) {
+            throw new ChatNotFoundException("No se ha encontrado el mensaje a eliminar");
+        }
+
+        if (!chat.get().getSender().getId().equals(userId)) {
+            throw new UserRoleException("No tienes permiso para eliminar este mensaje");
+        }
+
+        chatRepository.delete(chat.get());
+    }
+
 
 }
