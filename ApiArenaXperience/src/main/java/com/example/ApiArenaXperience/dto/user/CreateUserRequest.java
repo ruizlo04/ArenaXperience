@@ -1,8 +1,8 @@
 package com.example.ApiArenaXperience.dto.user;
 
-import com.example.ApiArenaXperience.model.user.UserRole;
 import com.example.ApiArenaXperience.validation.FieldsValueMatch;
 import com.example.ApiArenaXperience.validation.UniqueUsername;
+import com.example.ApiArenaXperience.validation.ValidPhoneNumber;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -34,7 +34,7 @@ public record CreateUserRequest(
         String password,
         @NotBlank(message = "Debes confirmar la contraseña")
         String verifyPassword,
-        String phoneNumber,
-        UserRole rol
+        @ValidPhoneNumber
+        String phoneNumber
 ) {
 }

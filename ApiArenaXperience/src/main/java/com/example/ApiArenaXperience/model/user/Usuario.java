@@ -1,6 +1,7 @@
 package com.example.ApiArenaXperience.model.user;
 
 import com.example.ApiArenaXperience.model.event.Evento;
+import com.example.ApiArenaXperience.model.review.Review;
 import com.example.ApiArenaXperience.model.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,6 +55,8 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Ticket> tickets = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
