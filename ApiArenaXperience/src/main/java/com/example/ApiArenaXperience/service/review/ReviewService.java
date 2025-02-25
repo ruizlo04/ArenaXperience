@@ -110,5 +110,22 @@ public class ReviewService {
         return Optional.of(ReviewResponseDto.of(review));
     }
 
+    public void eliminarResenya(UUID id, Usuario usuarioAutenticado) {
+        Optional<Review> review = reviewRepository.findById(id);
+
+        if (review.isEmpty()){
+            throw new ResenyaNotFoundException("No se ha encontrado dicha reseña");
+        }
+
+        boolean esPropietario = review.get().getUser().getId().equals(usuarioAutenticado.getId());
+        boolean esAdmin = usuarioAutenticado.getRoles().contains(UserRole.ADMIN);
+
+        if (!esPropietario && !esAdmin) {
+            throw new UserRoleException("No tienes permiso para eliminar esta reseña");
+        }
+
+        reviewRepository.delete(review.get());
+    }
+
 
 }
