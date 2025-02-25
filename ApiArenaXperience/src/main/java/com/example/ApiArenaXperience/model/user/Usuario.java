@@ -1,5 +1,6 @@
 package com.example.ApiArenaXperience.model.user;
 
+import com.example.ApiArenaXperience.model.chat.Chat;
 import com.example.ApiArenaXperience.model.event.Evento;
 import com.example.ApiArenaXperience.model.review.Review;
 import com.example.ApiArenaXperience.model.ticket.Ticket;
@@ -57,6 +58,12 @@ public class Usuario implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<>();
+
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Chat> sentChats = new HashSet<>();
+
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Chat> receivedChats = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
