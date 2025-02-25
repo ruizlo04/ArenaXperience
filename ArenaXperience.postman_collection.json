@@ -1,0 +1,1107 @@
+{
+	"info": {
+		"_postman_id": "5bf72ef6-e268-4817-8233-b54065b74f28",
+		"name": "ArenaXperience",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38690870",
+		"_collection_link": "https://tmdb77.postman.co/workspace/Workspace_ArenaXperience~57f1ee88-a64d-47c7-867e-7a18bd72bcac/collection/38690870-5bf72ef6-e268-4817-8233-b54065b74f28?action=share&source=collection_link&creator=38690870"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "RegistrarUsuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ruizlo03\",\r\n    \"email\": \"carlosruizlopez.0304@gmail.com\",\r\n    \"verifyEmail\": \"carlosruizlopez.0304@gmail.com\",\r\n    \"password\": \"Biris-04\",\r\n    \"verifyPassword\": \"Biris-04\",\r\n    \"phoneNumber\": \"639657561\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/auth/register",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivarCuenta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"bbedd440-76dc-4e84-bfa3-e9f9a9363379\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/activate/account/",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"activate",
+								"account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoginWithUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token_user\", json.token)\r",
+									"pm.collectionVariables.set(\"refreshToken_user\", json.refreshToken)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/auth/login",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verPerfil",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/me",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObtenerTokenRefresco",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{refreshToken_user}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/auth/refresh/token",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"refresh",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarPerfiles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/?page=0&size=2",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditarUsuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ruiz.locar23@triana.salesianos.edu\",\r\n    \"verifyEmail\": \"ruiz.locar23@triana.salesianos.edu\",\r\n    \"password\": \"Biris-03\",\r\n    \"verifyPassword\": \"Biris-03\",\r\n    \"phoneNumber\": \"639657561\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/ruizlo03",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"ruizlo03"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditarUsuarioSiendoAdmin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ruiz.locar23@triana.salesianos.edu\",\r\n    \"verifyEmail\": \"ruiz.locar23@triana.salesianos.edu\",\r\n    \"password\": \"Biris-03\",\r\n    \"verifyPassword\": \"Biris-03\",\r\n    \"phoneNumber\": \"639657561\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/admin/ruizlo03",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"admin",
+								"ruizlo03"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarUsuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/user1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"user1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarUsuarioSiendoAdmin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/delete/admin/user5",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"delete",
+								"admin",
+								"user5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ticket",
+			"item": [
+				{
+					"name": "ComprarTicket",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/evento/Barcelona-Real Madrid/comprar-ticket",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								"Barcelona-Real Madrid",
+								"comprar-ticket"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarEntradas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/user1/tickets?page=0&size=2",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"user1",
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarTicket",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/evento/ticket/550e8400-e29b-41d4-a716-446655440201",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								"ticket",
+								"550e8400-e29b-41d4-a716-446655440201"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Eventos",
+			"item": [
+				{
+					"name": "ListarTodos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/evento/?page=0&size=2",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarEventosFiltrando",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sevilla-Villarreal\",\r\n    \"date\": \"2025-11-22\", \r\n    \"capacity\": 750\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/evento/search",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateEvento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "event",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Escritorio/ArenaXperience/ApiArenaXperience/json/json.json"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Escritorio/ArenaXperience/ApiArenaXperience/json/derbi.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASEURL}}/evento/register",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditarEvento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2025-08-20\",\r\n    \"capacity\": 700\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/evento/editar/Barcelona-Real Madrid",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								"editar",
+								"Barcelona-Real Madrid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarEvento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/evento/eliminar/Sevilla-Betis",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								"eliminar",
+								"Sevilla-Betis"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarTicketsEvento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/evento/Barcelona-Real Madrid/tickets",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"evento",
+								"Barcelona-Real Madrid",
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Review",
+			"item": [
+				{
+					"name": "AgregarReseña",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventoName\": \"Sevilla-Villarreal\",\r\n    \"rating\": 10,\r\n    \"comment\": \"¡Un evento increíble! La afición estuvo genial.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/review/agregar",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"review",
+								"agregar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VerReseñasEvento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/review/evento/Sevilla-Villarreal?page=0&size=4",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"review",
+								"evento",
+								"Sevilla-Villarreal"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VerReseñas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/review/evento/?page=0&size=2",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"review",
+								"evento",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditarReseña",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\": 8,\r\n    \"comment\": \"¡Gran partido! Muy emocionante.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/review/editar/550e8400-e29b-41d4-a716-446655440103",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"review",
+								"editar",
+								"550e8400-e29b-41d4-a716-446655440103"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarReseña",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/review/eliminar/550e8400-e29b-41d4-a716-446655440101",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"review",
+								"eliminar",
+								"550e8400-e29b-41d4-a716-446655440101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "EnviarMensaje",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/chat/send?username=user2&message=Hola,¿cómo estás?",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"chat",
+								"send"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user2"
+								},
+								{
+									"key": "message",
+									"value": "Hola,¿cómo estás?"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarMensajesChat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/chat/list?page=0&size=3",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"chat",
+								"list"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditarChat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"message\": \"Este es el nuevo contenido del mensaje\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/chat/edit/550e8400-e29b-41d4-a716-446655440301",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"chat",
+								"edit",
+								"550e8400-e29b-41d4-a716-446655440301"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarMensaje",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/chat/delete/550e8400-e29b-41d4-a716-446655440302",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"chat",
+								"delete",
+								"550e8400-e29b-41d4-a716-446655440302"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASEURL",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "token_user",
+			"value": ""
+		},
+		{
+			"key": "refreshToken_user",
+			"value": ""
+		}
+	]
+}
