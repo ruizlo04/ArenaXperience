@@ -16,6 +16,8 @@ import com.example.ApiArenaXperience.repo.TicketRepository;
 import com.example.ApiArenaXperience.repo.UserRepository;
 import com.example.ApiArenaXperience.specification.EventoSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,16 +40,14 @@ public class EventoService {
     private final UserRepository userRepository;
     private final StorageService storageService;
 
-    public List<EventoResponse> getAllEvents() {
-        List<Evento> events = eventoRepository.findAll();
+    public Page<EventoResponse> getAllEvents(Pageable pageable) {
+        Page<Evento> events = eventoRepository.findAll(pageable);
 
         if (events.isEmpty()) {
             throw new EventNotFoundException("No hay eventos creados.");
         }
 
-        return events.stream()
-                .map(EventoResponse::of)
-                .collect(Collectors.toList());
+        return events.map(EventoResponse::of);
     }
 
     @Transactional
