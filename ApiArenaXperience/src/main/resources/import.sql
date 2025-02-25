@@ -1,8 +1,12 @@
 INSERT INTO user_entity (id, username, password, email, phone_number, created_at, enabled, activation_token)
-VALUES ('550e8400-e29b-41d4-a716-446655440000', 'admin', '{noop}admin123', 'admin@example.com', '123456789', NOW(), true, NULL);
+VALUES ('550e8400-e29b-41d4-a716-446655440000', 'admin', '{noop}admin123', 'admin@example.com', '123456789', NOW(), true, NULL),
+       ('550e8400-e29b-41d4-a716-446655440006', 'user1', '{noop}user123', 'user1@example.com', '987654321', NOW(), true, NULL),
+       ('550e8400-e29b-41d4-a716-446655440007', 'user2', '{noop}user124', 'user2@example.com', '654321987', NOW(), true, NULL);
 
 INSERT INTO usuario_roles (usuario_id, roles)
-VALUES ('550e8400-e29b-41d4-a716-446655440000', 'ADMIN');
+VALUES ('550e8400-e29b-41d4-a716-446655440000', 'ADMIN'),
+       ('550e8400-e29b-41d4-a716-446655440006', 'USER'),
+       ('550e8400-e29b-41d4-a716-446655440007', 'USER');
 
 INSERT INTO event_entity (id, name, date, capacity, price, admin_id)
 VALUES
