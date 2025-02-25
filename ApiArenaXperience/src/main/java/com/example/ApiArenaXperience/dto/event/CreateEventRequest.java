@@ -21,6 +21,6 @@ public record CreateEventRequest(
         @Max(value = 800, message = "La capacidad no puede superar los 800.")
         int capacity,
         @ValidPrecio
-        double precio
+        double price
 ) {
 }
