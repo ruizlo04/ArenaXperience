@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +41,26 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
+
+    @Operation(
+            summary = "Obtener todos los usuarios paginados",
+            description = "Este endpoint permite obtener una lista paginada de usuarios. " +
+                    "Requiere permisos de administrador para su acceso."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Page.class))),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado - Se requieren permisos de administrador"),
+            @ApiResponse(responseCode = "404", description = "No hay usuarios registrados en el sistema")
+    })
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/")
+    public Page<UserResponse> getAllUsers(
+            @Parameter(description = "Información de paginación y ordenación") Pageable pageable) {
+        return userService.getAllUsers(pageable);
+    }
+
 
     @Operation(summary = "Registrar un usuario", description = "Crea un nuevo usuario en la aplicación")
     @ApiResponses({
@@ -146,11 +168,6 @@ public class UserController {
         return user;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
 
     @Operation(summary = "Editar un usuario", description = "Permite a un usuario autenticado modificar su información de perfil.")
     @ApiResponses(value = {

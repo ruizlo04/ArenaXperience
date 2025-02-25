@@ -13,6 +13,8 @@ import com.example.ApiArenaXperience.security.jwt.refresh.RefreshTokenRepository
 import com.example.ApiArenaXperience.security.util.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,16 @@ public class UserService {
 
     @Value("${activation.duration}")
     private int activationDuration;
+
+    public Page<UserResponse> getAllUsers(Pageable pageable) {
+        Page<Usuario> users = userRepository.findAll(pageable);
+
+        if (users.isEmpty()) {
+            throw new UsersNotFoundException("No hay usuarios registrados en el sistema.");
+        }
+
+        return users.map(UserResponse::of);
+    }
 
     public Usuario createUser(CreateUserRequest createUserRequest) {
 
@@ -75,17 +87,6 @@ public class UserService {
                 })
                 .orElseThrow(() -> new ActivationExpiredException("El código de activación no existe o ha caducado"));
     }
-    public List<UserResponse> getAllUsers() {
-        List<Usuario> users = userRepository.findAll();
-
-        if (users.isEmpty()) {
-            throw new UsersNotFoundException("No hay usuarios registrados en el sistema.");
-        }
-
-        return users.stream()
-                .map(UserResponse::of)
-                .collect(Collectors.toList());
-    }
 
     public List<TicketResponse> getUserTickets(String username, Usuario authenticatedUser) {
         if (!authenticatedUser.getRoles().contains(UserRole.ADMIN) && !authenticatedUser.getUsername().equals(username)) {
@@ -95,7 +96,7 @@ public class UserService {
         Optional<Usuario> user = userRepository.findByUsernameWithTickets(username);
 
         if (user.isEmpty()){
-            throw new UsersNotFoundException("No se ha encontrado ese usuario");
+            throw new UsersNotFoundException("No se han encontrado tickets para ese usuario");
         }
 
         return user.get().getTickets().stream()
