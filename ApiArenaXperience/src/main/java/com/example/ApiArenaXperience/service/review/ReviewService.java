@@ -41,7 +41,7 @@ public class ReviewService {
                 .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
 
         Review review = Review.builder()
-                .user(usuario)
+                .user(usuario.get())
                 .event(evento)
                 .rating(rating)
                 .comment(comment)
