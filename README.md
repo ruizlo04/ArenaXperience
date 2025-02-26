@@ -2,19 +2,19 @@ ArenaXperience es una empresa dedicada a la creación de estadios de fútbol con
 
 # Para mejorar la experiencia de nuestros aficionados, hemos desarrollado un portal de abonados con diversas funcionalidades:
 
-🎟️ Explorar eventos disponibles
+- 🎟️ Explorar eventos disponibles
 
-🔐 Registro y autenticación de usuarios
+* 🔐 Registro y autenticación de usuarios
 
-💬 Interacción entre usuarios mediante chat
++ 💬 Interacción entre usuarios mediante chat
 
-🏟️ Compra y gestión de entradas
+* 🏟️ Compra y gestión de entradas
 
-⭐ Sistema de reseñas para socios
+- ⭐ Sistema de reseñas para socios
 
-🚀 Autenticación y Registro
++ 🚀 Autenticación y Registro
 
-🔑 Opciones de inicio de sesión:
+* 🔑 Opciones de inicio de sesión:
 
 # Se puede acceder con usuarios predefinidos:
 
