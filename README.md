@@ -20,11 +20,11 @@ ArenaXperience es una empresa dedicada a la creación de estadios de fútbol con
 
 Admin: admin / admin123
 Usuarios: 
-user1 / user123
-user2 / user124
-user3 / user125
-user4 / user126
-user5 / user127
+1. user1 / user123
+2. user2 / user124
+3. user3 / user125
+4. user4 / user126
+5. user5 / user127
 
 O bien, registrarse como usuario normal. Al registrarse, se enviará un código de verificación al email introducido para completar el acceso.
 
