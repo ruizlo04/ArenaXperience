@@ -67,3 +67,7 @@ O bien, registrarse como usuario normal. Al registrarse, se enviará un código 
 * 📝 Editar y eliminar mensajes enviados.
 
 - 📜 Listar todos los mensajes de un usuario.
+
+
+# Enlace Figma
+- https://www.figma.com/design/VscFfgDgkkzN8YWlLSm3GI/Untitled?node-id=0-1&p=f&t=OuUcgb1FV20SeGDM-0
