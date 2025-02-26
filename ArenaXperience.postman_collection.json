@@ -65,7 +65,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"token\": \"bbedd440-76dc-4e84-bfa3-e9f9a9363379\"\r\n}",
+							"raw": "{\r\n    \"token\": \"732618fa-0147-4ace-8aa9-bd5b8ddbcfd7\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,7 +118,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin123\"\r\n}",
+							"raw": "{\r\n    \"username\": \"user6\",\r\n    \"password\": \"user128\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,44 +207,6 @@
 					"response": []
 				},
 				{
-					"name": "ListarPerfiles",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_user}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/user/?page=0&size=2",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"user",
-								""
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "EditarUsuario",
 					"request": {
 						"auth": {
@@ -276,13 +238,159 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASEURL}}/user/ruizlo03",
+							"raw": "{{BASEURL}}/user/user6",
 							"host": [
 								"{{BASEURL}}"
 							],
 							"path": [
 								"user",
-								"ruizlo03"
+								"user6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarUsuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/user6",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"user6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoginWithUserAdmin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token_user\", json.token)\r",
+									"pm.collectionVariables.set(\"refreshToken_user\", json.refreshToken)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/auth/login",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verPerfilAdmin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/me",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarPerfiles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/?page=0&size=6",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "6"
+								}
 							]
 						}
 					},
@@ -327,34 +435,6 @@
 					"response": []
 				},
 				{
-					"name": "EliminarUsuario",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_user}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/user/user1",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"user",
-								"user1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "EliminarUsuarioSiendoAdmin",
 					"request": {
 						"auth": {
@@ -383,6 +463,28 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -611,12 +713,12 @@
 								{
 									"key": "event",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Escritorio/ArenaXperience/ApiArenaXperience/json/json.json"
+									"src": "Kkg349P1q/json.json"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Escritorio/ArenaXperience/ApiArenaXperience/json/derbi.jpg"
+									"src": "BSE8tXZEt/derbi.jpg"
 								}
 							]
 						},
@@ -734,6 +836,86 @@
 		{
 			"name": "Review",
 			"item": [
+				{
+					"name": "LoginWithUserSocio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token_user\", json.token)\r",
+									"pm.collectionVariables.set(\"refreshToken_user\", json.refreshToken)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user3\",\r\n    \"password\": \"user125\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/auth/login",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verPerfilSocio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/me",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "AgregarReseña",
 					"request": {
@@ -998,6 +1180,86 @@
 					"response": []
 				},
 				{
+					"name": "LoginWithUser1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token_user\", json.token)\r",
+									"pm.collectionVariables.set(\"refreshToken_user\", json.refreshToken)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user1\",\r\n    \"password\": \"user123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/auth/login",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verPerfilUser1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/me",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "EditarChat",
 					"request": {
 						"auth": {
@@ -1030,6 +1292,86 @@
 								"chat",
 								"edit",
 								"550e8400-e29b-41d4-a716-446655440301"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoginWithUser2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token_user\", json.token)\r",
+									"pm.collectionVariables.set(\"refreshToken_user\", json.refreshToken)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user2\",\r\n    \"password\": \"user124\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/auth/login",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verPerfilUser2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/me",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"me"
 							]
 						}
 					},
