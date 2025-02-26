@@ -62,7 +62,7 @@ O bien, registrarse como usuario normal. Al registrarse, se enviará un código 
 
 * 📩 Enviar mensajes entre usuarios.
 
-📝 Editar y eliminar mensajes enviados.
+* 📝 Editar y eliminar mensajes enviados.
 
-📜 Listar todos los mensajes de un usuario.
+- 📜 Listar todos los mensajes de un usuario.
 
