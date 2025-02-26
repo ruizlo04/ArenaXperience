@@ -30,37 +30,37 @@ O bien, registrarse como usuario normal. Al registrarse, se enviará un código 
 
 # 🔥 Funcionalidades Principales
 
-👤 Perfil de Usuario
+* 👤 Perfil de Usuario
 
-🔍 Visualización del perfil personal.
++ 🔍 Visualización del perfil personal.
 
-✏️ Edición del perfil (propio y, en el caso del admin, de cualquier usuario).
+- ✏️ Edición del perfil (propio y, en el caso del admin, de cualquier usuario).
 
-🗑️ Eliminación de cuenta (los usuarios pueden eliminar la suya, el admin puede eliminar cualquier cuenta).
++ 🗑️ Eliminación de cuenta (los usuarios pueden eliminar la suya, el admin puede eliminar cualquier cuenta).
 
 # 🎫 Gestión de Eventos
 
-📅 Consulta de eventos disponibles mediante una lista o filtros por nombre, fecha y capacidad.
+* 📅 Consulta de eventos disponibles mediante una lista o filtros por nombre, fecha y capacidad.
 
-🛒 Adquisición de entradas.
+- 🛒 Adquisición de entradas.
 
-📂 Visualización de entradas adquiridas (usuarios ven sus propias entradas, el admin puede ver todas).
++ 📂 Visualización de entradas adquiridas (usuarios ven sus propias entradas, el admin puede ver todas).
 
-❌ Eliminación de entradas propias.
+* ❌ Eliminación de entradas propias.
 
-🛠️ Gestión de eventos por parte del admin (crear, editar y eliminar, salvo eventos con tickets comprados).
+- 🛠️ Gestión de eventos por parte del admin (crear, editar y eliminar, salvo eventos con tickets comprados).
 
 # ⭐ Reseñas de Eventos (Exclusivo para Socios)
 
-📝 Agregar reseñas de eventos asistidos.
+* 📝 Agregar reseñas de eventos asistidos.
 
-👀 Visualizar todas las reseñas de eventos.
+- 👀 Visualizar todas las reseñas de eventos.
 
-✍️ Editar y eliminar reseñas propias.
++ ✍️ Editar y eliminar reseñas propias.
 
 # 💬 Chat entre Usuarios
 
-📩 Enviar mensajes entre usuarios.
+* 📩 Enviar mensajes entre usuarios.
 
 📝 Editar y eliminar mensajes enviados.
 
