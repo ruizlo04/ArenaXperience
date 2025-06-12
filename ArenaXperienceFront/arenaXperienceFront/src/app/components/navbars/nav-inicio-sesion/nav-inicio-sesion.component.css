@@ -1,0 +1,44 @@
+.custom-navbar {
+  background: linear-gradient(to bottom, #c40000, #5a0000);
+  padding: 20px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  font-family: 'Creepster', cursive;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: 2.2rem;
+  color: white;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px #000;
+}
+
+.btn-register {
+  background-color: white;
+  color: #a00000;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: #ffd6d6;
+  color: #5a0000;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.5);
+}
