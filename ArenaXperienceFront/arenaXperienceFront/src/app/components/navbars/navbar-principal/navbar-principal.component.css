@@ -1,0 +1,58 @@
+.custom-navbar {
+  background: linear-gradient(to bottom, #c40000, #5a0000);
+  padding: 20px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  font-family: 'Creepster', cursive;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: 2.2rem;
+  color: white;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px #000;
+}
+
+.custom-offcanvas {
+  background: linear-gradient(to bottom, #c40000, #5a0000);
+  color: white;
+  font-family: 'Creepster', cursive;
+}
+
+.menu-link {
+  font-size: 1.5rem;
+  color: white;
+  text-decoration: none;
+  text-shadow: 1px 1px black;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.menu-link:hover {
+  transform: scale(1.1);
+  color: #ffd700;
+}
+
+.btn-outline-light {
+  border-color: white;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-outline-light:hover {
+  background-color: white;
+  color: #5a0000;
+}
+
+.btn-close-white {
+  filter: invert(1);
+}

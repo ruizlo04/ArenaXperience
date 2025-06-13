@@ -1,0 +1,27 @@
+<!-- filtro.component.html -->
+<div class="d-flex justify-content-center align-items-center flex-wrap gap-2 mb-5">
+  <button class="btn btn-danger fw-bold text-uppercase" style="border-radius: 25px; font-family: 'Creepster', cursive;">
+    FILTRAR POR:
+  </button>
+
+  <input type="text" class="form-control" style="border-radius: 25px; max-width: 200px;" 
+         placeholder="Nombre del evento" [(ngModel)]="filters.name">
+
+  <input type="date" class="form-control" style="border-radius: 25px; max-width: 200px;" 
+         [(ngModel)]="filters.date">
+
+  <input type="number" class="form-control" style="border-radius: 25px; max-width: 120px;" 
+         placeholder="Capacidad" [(ngModel)]="filters.capacity">
+
+  <button class="btn btn-danger fw-bold text-uppercase" 
+          style="border-radius: 25px; font-family: 'Creepster', cursive;"
+          (click)="applyFilters()">
+    🔍 BUSCAR
+  </button>
+
+  <button class="btn btn-secondary fw-bold text-uppercase" 
+          style="border-radius: 25px; font-family: 'Creepster', cursive;"
+          (click)="resetFilters()">
+    🗑️ LIMPIAR
+  </button>
+</div>

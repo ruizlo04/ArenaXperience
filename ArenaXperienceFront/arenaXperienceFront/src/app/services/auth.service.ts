@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -15,5 +15,10 @@ export class AuthService {
       `${this.apiUrl}/user/auth/login`,
       credentials
     );
+  }
+
+  getCurrentUser(token: string) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/user/me`, { headers });
   }
 }

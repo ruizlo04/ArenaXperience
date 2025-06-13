@@ -27,7 +27,7 @@ public class EventoSpecification {
             }
 
             if (!predicates.isEmpty()) {
-                return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }
 
             return criteriaBuilder.conjunction();
