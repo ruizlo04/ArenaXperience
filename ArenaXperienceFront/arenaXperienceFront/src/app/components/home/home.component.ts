@@ -1,4 +1,3 @@
-// home.component.ts
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { EventService } from '../../services/event.service';
@@ -34,12 +33,13 @@ export class HomeComponent implements OnInit {
   }
 
   getEvents(page: number, filters: any = {}): void {
+    this.currentPage = page; 
+
     if (Object.keys(filters).length > 0) {
       this.eventService.searchEvents(this.token, filters).subscribe({
         next: (res) => {
-          // Asumiendo que la respuesta de búsqueda es un array
           this.events = res;
-          this.totalPages = 1; // La búsqueda no tiene paginación en este ejemplo
+          this.totalPages = 1; 
         },
         error: (err) => {
           console.error('Error al buscar eventos:', err);
@@ -58,11 +58,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  onFilterApplied(filters: any): void {
-    this.currentFilters = filters;
-    this.currentPage = 0;
-    this.getEvents(this.currentPage, filters);
+
+  onFilterApplied(filters: any) {
+    this.currentFilters = filters; 
+    console.log('🛬 Filtros recibidos:', filters); 
+    this.getEvents(0, filters); 
   }
+
 
   nextPage(): void {
     if (this.currentPage < this.totalPages - 1) {

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<Evento, UUID>, JpaSpecificationExecutor<Evento> {
+    
     Optional<Evento> findByName(String name);
 
     Page<Evento> findAll(Pageable pageable);

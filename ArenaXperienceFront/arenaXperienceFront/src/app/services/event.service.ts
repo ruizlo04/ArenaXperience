@@ -1,4 +1,3 @@
-// event.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -17,29 +16,11 @@ export class EventService {
   }
 
   searchEvents(token: string, filters: any): Observable<any> {
-    return new Observable(observer => {
-      fetch(`${this.baseUrl}/evento/search`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(filters)
-      })
-        .then(async response => {
-          if (!response.ok) {
-            throw await response.json();
-          }
-          return response.json();
-        })
-        .then(data => {
-          observer.next(data);
-          observer.complete();
-        })
-        .catch(error => {
-          observer.error(error);
-        });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     });
+    return this.http.post(`${this.baseUrl}/evento/search`, filters, { headers });
   }
 
   buyTicket(eventName: string, token: string): Observable<any> {

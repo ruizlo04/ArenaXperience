@@ -15,12 +15,15 @@ export class FiltroComponent {
   };
 
   applyFilters() {
-    // Eliminar propiedades vacías o nulas
     const cleanFilters = Object.fromEntries(
       Object.entries(this.filters).filter(([_, value]) => value !== '' && value !== null)
     );
+
+    console.log('📦 Filtros aplicados:', cleanFilters); 
+
     this.filterApplied.emit(cleanFilters);
   }
+
 
   resetFilters() {
     this.filters = {
