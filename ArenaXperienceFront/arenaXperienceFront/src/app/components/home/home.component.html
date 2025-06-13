@@ -1,0 +1,33 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="container py-5" style="min-height: calc(100vh - 80px); padding-top: 120px !important; background-color: #700000; font-family: 'Creepster', cursive;">
+  <h1 class="text-white text-center fw-bold mb-5" style="font-size: 2.8rem; text-shadow: 2px 2px black; text-transform: uppercase; letter-spacing: 3px;">
+    EVENTOS
+  </h1>
+
+  <app-filtro (filterApplied)="onFilterApplied($event)" class="mb-5"></app-filtro>
+
+  <div class="row justify-content-center" *ngIf="events && events.length > 0">
+    <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let event of events">
+      <div class="card text-white h-100" style="background: linear-gradient(135deg, #e03724 0%, #e11f0e 100%); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(62, 11, 6, 0.4); border: 1px solid rgba(255,255,255,0.1); font-family: 'Creepster', cursive; transition: transform 0.4s;">
+        <img [src]="event.imageUrl || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=200&fit=crop'" class="card-img-top" style="height: 200px; object-fit: cover;" [alt]="event.name">
+
+        <div class="card-body text-center">
+          <h5 class="card-title text-uppercase fw-bold mb-3" style="text-shadow: 2px 2px black; letter-spacing: 1.5px;">
+            {{ event.name }}
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="events && events.length === 0" class="text-white text-center fw-bold mt-5">
+    No hay eventos disponibles.
+  </div>
+
+  <div class="d-flex justify-content-center mt-4" *ngIf="totalPages > 1">
+    <button class="btn btn-secondary me-2" (click)="prevPage()" [disabled]="currentPage === 0">Anterior</button>
+    <span class="text-white align-self-center mx-2">Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    <button class="btn btn-secondary ms-2" (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">Siguiente</button>
+  </div>
+</div>
