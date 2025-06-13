@@ -84,8 +84,4 @@ export class HomeComponent implements OnInit {
     alert(`Comprar entrada para: ${eventName}`);
   }
 
-  logout(): void {
-    localStorage.clear();
-    location.href = '/login';
-  }
 }

@@ -15,13 +15,15 @@ export class FiltroComponent {
   };
 
   applyFilters() {
-    const cleanFilters = Object.fromEntries(
-      Object.entries(this.filters).filter(([_, value]) => value !== '' && value !== null)
-    );
+    const cleanedFilters = {
+      name: this.filters.name || null,
+      date: this.filters.date || null,
+      capacity: this.filters.capacity !== null ? this.filters.capacity : null
+    };
 
-    console.log('📦 Filtros aplicados:', cleanFilters); 
+    console.log('📦 Filtros aplicados:', cleanedFilters);
 
-    this.filterApplied.emit(cleanFilters);
+    this.filterApplied.emit(cleanedFilters);
   }
 
 

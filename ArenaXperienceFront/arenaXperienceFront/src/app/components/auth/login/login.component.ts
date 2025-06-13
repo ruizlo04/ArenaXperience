@@ -29,7 +29,39 @@ export class LoginComponent {
         next: (res) => {
           localStorage.setItem('token', res.token);
           localStorage.setItem('refreshToken', res.refreshToken);
-          this.router.navigate(['/home']);
+
+          // Obtener info del usuario
+          this.authService.getCurrentUser(res.token).subscribe({
+            next: (user) => {
+              const username = user.name || user.username;
+              localStorage.setItem('username', username);
+
+              // Asignar rol manualmente según usuario
+              let role = '';
+              if (username === 'admin') role = 'ADMIN';
+              else if (['user3', 'user6'].includes(username)) role = 'SOCIO';
+              else role = 'USER';
+
+              localStorage.setItem('role', role);
+
+              this.router.navigate(['/home']);
+            },
+            error: (err) => {
+              console.error('Error al obtener datos de usuario:', err);
+              // En caso de error, aún puedes asumir el rol por el username que se usó para loguear
+              const username = this.loginForm.value.username;
+              localStorage.setItem('username', username);
+
+              let role = '';
+              if (username === 'admin') role = 'ADMIN';
+              else if (['user3', 'user6'].includes(username)) role = 'SOCIO';
+              else role = 'USER';
+
+              localStorage.setItem('role', role);
+
+              this.router.navigate(['/home']);
+            }
+          });
         },
         error: (err) => {
           if (err.status === 401 || err.status === 404) {
@@ -41,5 +73,4 @@ export class LoginComponent {
       });
     }
   }
-
 }
