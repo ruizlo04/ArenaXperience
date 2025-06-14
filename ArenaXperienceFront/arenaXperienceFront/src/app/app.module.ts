@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarPrincipalComponent } from './components/navbars/navbar-principal/navbar-principal.component';
 import { FiltroComponent } from './components/filters/filtro/filtro.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { ActivateAccountComponent } from './components/auth/activate-account/activate-account.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { FiltroComponent } from './components/filters/filtro/filtro.component';
     NavInicioSesionComponent,
     HomeComponent,
     NavbarPrincipalComponent,
-    FiltroComponent
+    FiltroComponent,
+    RegisterComponent,
+    ActivateAccountComponent
   ],
   imports: [
     RouterModule,
