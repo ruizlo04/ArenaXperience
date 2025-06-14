@@ -30,6 +30,11 @@ public class Ticket {
     @JoinColumn(name = "event_id")
     private Evento event;
 
+    @Column(nullable = false)
+    private int cantidad;
+
+    private double precioFinal;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
