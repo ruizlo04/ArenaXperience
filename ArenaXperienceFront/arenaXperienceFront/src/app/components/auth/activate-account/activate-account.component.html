@@ -1,0 +1,31 @@
+<div class="login-page">
+  <div class="card login-container">
+    <div class="card-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Icono usuario" width="60" class="mb-3" />
+      <h2 class="card-title">Activa tu Cuenta</h2>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="tokenForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">Introduce el Token</label>
+          <input
+            type="text"
+            formControlName="token"
+            class="form-control"
+            placeholder="Ej: 123e4567-e89b-12d3-a456-426614174000"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-login mt-4">Activar Cuenta</button>
+
+        <div *ngIf="error" class="alert alert-danger mt-3 text-center">
+          {{ error }}
+        </div>
+        <div *ngIf="success" class="alert alert-success mt-3 text-center">
+          {{ success }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
