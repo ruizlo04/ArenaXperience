@@ -55,4 +55,12 @@ export class AuthService {
       map(response => response.exists)
     );
   }
+
+  getUsername(): string | null {
+  if (typeof window !== 'undefined' && localStorage) {  // 💥 Esto evita que se ejecute en SSR
+    return localStorage.getItem('username');
+  }
+  return null;
+}
+
 }

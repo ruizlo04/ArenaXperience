@@ -35,8 +35,16 @@ export class EventService {
   }
 
   getEventoPorNombre(eventName: string, token: string): Observable<any> {
-  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  return this.http.get(`${this.baseUrl}/evento/nombre/${encodeURIComponent(eventName)}`, { headers });
-}
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.baseUrl}/evento/nombre/${encodeURIComponent(eventName)}`, { headers });
+  }
+
+  getUserTickets(username: string, token: string) {
+    return this.http.get<any[]>(`http://localhost:8080/user/${username}/tickets`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
 
 }
