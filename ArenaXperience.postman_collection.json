@@ -27,7 +27,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"ruizlo03\",\r\n    \"email\": \"carlosruizlopez.0304@gmail.com\",\r\n    \"verifyEmail\": \"carlosruizlopez.0304@gmail.com\",\r\n    \"password\": \"Biris-04\",\r\n    \"verifyPassword\": \"Biris-04\",\r\n    \"phoneNumber\": \"639657561\"\r\n}",
+							"raw": "{\r\n    \"username\": \"ruizlo03\",\r\n    \"email\": \"carlosruizlopez.0304@gmail.com\",\r\n    \"verifyEmail\": \"carlosruizlopez.0304@gmail.com\",\r\n    \"password\": \"Biris-04\",\r\n    \"verifyPassword\": \"Biris-04\",\r\n    \"phoneNumber\": \"123456789\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -65,7 +65,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"token\": \"732618fa-0147-4ace-8aa9-bd5b8ddbcfd7\"\r\n}",
+							"raw": "{\r\n    \"token\": \"e24296b4-c4c0-4f7e-9ac2-90f1e351329d\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -516,14 +516,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASEURL}}/evento/Barcelona-Real Madrid/comprar-ticket",
+							"raw": "{{BASEURL}}/evento/Barcelona-Real%20Madrid/comprar-ticket?cantidad=2",
 							"host": [
 								"{{BASEURL}}"
 							],
 							"path": [
 								"evento",
-								"Barcelona-Real Madrid",
+								"Barcelona-Real%20Madrid",
 								"comprar-ticket"
+							],
+							"query": [
+								{
+									"key": "cantidad",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -654,9 +660,6 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -668,11 +671,11 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Sevilla-Villarreal\",\r\n    \"date\": \"2025-11-22\", \r\n    \"capacity\": 750\r\n}",
+							"raw": "{\r\n    \"name\": \"Sevilla\",\r\n    \"date\": \"\", \r\n    \"capacity\": 800\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
