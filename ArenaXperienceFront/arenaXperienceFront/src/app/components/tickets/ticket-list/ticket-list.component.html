@@ -1,0 +1,32 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="container d-flex flex-column justify-content-center align-items-center py-5 ticket-container">
+  <h2 class="text-white text-center mb-4 ticket-title">Compra de Entradas</h2>
+
+  <div class="card p-4 ticket-card">
+    <h4 class="text-white text-center mb-3">{{ eventName }}</h4>
+
+    <div class="mb-3">
+      <label class="text-white form-label">Cantidad:</label>
+      <input
+        type="number"
+        [(ngModel)]="cantidad"
+        min="1"
+        class="form-control"
+        (change)="validarCantidad()"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="text-white form-label">Precio total (€):</label>
+      <input
+        type="text"
+        [value]="precioFinal | currency:'EUR'"
+        class="form-control"
+        disabled
+      />
+    </div>
+
+    <button class="btn btn-danger w-100" (click)="comprar()">Confirmar Compra</button>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import { NavbarPrincipalComponent } from './components/navbars/navbar-principal/
 import { FiltroComponent } from './components/filters/filtro/filtro.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ActivateAccountComponent } from './components/auth/activate-account/activate-account.component';
+import { TicketListComponent } from './components/tickets/ticket-list/ticket-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ActivateAccountComponent } from './components/auth/activate-account/act
     NavbarPrincipalComponent,
     FiltroComponent,
     RegisterComponent,
-    ActivateAccountComponent
+    ActivateAccountComponent,
+    TicketListComponent
   ],
   imports: [
     RouterModule,

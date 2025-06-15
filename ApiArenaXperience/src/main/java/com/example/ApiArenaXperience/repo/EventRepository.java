@@ -13,8 +13,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<Evento, UUID>, JpaSpecificationExecutor<Evento> {
-    @Query("SELECT e FROM Evento e WHERE LOWER(e.name) LIKE LOWER(CONCAT('%', :name, '%'))")
-    Optional<Evento> findByName(String name);
+    @Query("SELECT e FROM Evento e WHERE LOWER(TRIM(e.name)) = LOWER(TRIM(:name))")
+    Optional<Evento> findByName(@Param("name") String name);
 
     Page<Evento> findAll(Pageable pageable);
 }

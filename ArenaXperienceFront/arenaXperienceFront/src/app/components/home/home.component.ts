@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { EventService } from '../../services/event.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -33,13 +35,13 @@ export class HomeComponent implements OnInit {
   }
 
   getEvents(page: number, filters: any = {}): void {
-    this.currentPage = page; 
+    this.currentPage = page;
 
     if (Object.keys(filters).length > 0) {
       this.eventService.searchEvents(this.token, filters).subscribe({
         next: (res) => {
           this.events = res;
-          this.totalPages = 1; 
+          this.totalPages = 1;
         },
         error: (err) => {
           console.error('Error al buscar eventos:', err);
@@ -58,13 +60,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
-
-  onFilterApplied(filters: any) {
-    this.currentFilters = filters; 
-    console.log('🛬 Filtros recibidos:', filters); 
-    this.getEvents(0, filters); 
+  onFilterApplied(filters: any): void {
+    this.currentFilters = filters;
+    console.log('🛬 Filtros recibidos:', filters);
+    this.getEvents(0, filters);
   }
-
 
   nextPage(): void {
     if (this.currentPage < this.totalPages - 1) {
@@ -81,7 +81,6 @@ export class HomeComponent implements OnInit {
   }
 
   buyTicket(eventName: string): void {
-    alert(`Comprar entrada para: ${eventName}`);
+    this.router.navigate(['/ticket-list', eventName]);
   }
-
 }

@@ -153,38 +153,46 @@ public class EventoService {
 
 
     @Transactional
-    public Ticket comprarTicket(String eventName, UUID usuarioId) {
+    public Ticket comprarTicket(String eventName, UUID usuarioId, int cantidad) {
         Optional<Usuario> usuario = userRepository.findByIdWithEvents(usuarioId);
         Optional<Evento> evento = eventoRepository.findByName(eventName);
 
-
-        if (usuario.isEmpty()){
+        if (usuario.isEmpty()) {
             throw new UsersNotFoundException("Usuario no encontrado");
         }
 
-
-        if (evento.isEmpty()){
+        if (evento.isEmpty()) {
             throw new EventNotFoundException("Evento no encontrado");
         }
 
+        Evento ev = evento.get();
 
-        if (evento.get().getAttendees().contains(usuario.get())) {
-            throw new RuntimeException("El usuario ya está registrado en este evento.");
+        int ticketsComprados = ev.getTickets().stream()
+                .mapToInt(Ticket::getCantidad)
+                .sum();
+
+        if ((ticketsComprados + cantidad) > ev.getCapacity()) {
+            throw new RuntimeException("No hay suficientes entradas disponibles.");
         }
 
+        double precioFinal = ev.getPrice() * cantidad;
 
         Ticket ticket = Ticket.builder()
-                .event(evento.get())
+                .event(ev)
                 .user(usuario.get())
+                .cantidad(cantidad)
+                .precioFinal(precioFinal)
                 .build();
-
 
         ticketRepository.save(ticket);
 
+        ev.setPrecioTotalRecaudado(ev.getPrecioTotalRecaudado() + precioFinal);
 
-        evento.get().addAttendee(usuario.get());
-        eventoRepository.save(evento.get());
+        if (!ev.getAttendees().contains(usuario.get())) {
+            ev.addAttendee(usuario.get());
+        }
 
+        eventoRepository.save(ev);
 
         return ticket;
     }

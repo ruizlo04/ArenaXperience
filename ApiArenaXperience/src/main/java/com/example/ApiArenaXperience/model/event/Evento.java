@@ -30,6 +30,7 @@ public class Evento {
     private LocalDate date;
     private int capacity;
     private double price;
+    private double precioTotalRecaudado;
 
     @ManyToOne
     @JoinColumn(name = "admin_id")

@@ -162,13 +162,14 @@ public class EventoController {
     })
     @PostMapping("/{eventName}/comprar-ticket")
     public ResponseEntity<GetTicketDto> comprarTicket(
-            @Parameter(description = "Nombre del evento para el cual se comprará el ticket", required = true)
             @PathVariable String eventName,
+            @RequestParam(defaultValue = "1") int cantidad,
             @AuthenticationPrincipal Usuario usuario) {
 
-        Ticket ticket = eventoService.comprarTicket(eventName, usuario.getId());
+        Ticket ticket = eventoService.comprarTicket(eventName, usuario.getId(), cantidad);
         return ResponseEntity.ok(GetTicketDto.of(ticket));
     }
+
 
     @Operation(
             summary = "Obtener tickets de un evento",
