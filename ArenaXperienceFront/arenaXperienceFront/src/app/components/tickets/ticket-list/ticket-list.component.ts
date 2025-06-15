@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; // <--- Importa Router
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { EventService } from '../../../services/event.service';
 import { AuthService } from '../../../services/auth.service';
 
@@ -18,7 +18,7 @@ export class TicketListComponent implements OnInit {
     private route: ActivatedRoute,
     private eventService: EventService,
     private authService: AuthService,
-    private router: Router // <--- Inyecta Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {

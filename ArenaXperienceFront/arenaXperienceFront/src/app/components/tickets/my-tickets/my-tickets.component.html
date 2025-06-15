@@ -1,0 +1,45 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="tickets-section">
+  <h2 class="tickets-title">🎟️ Mis Entradas</h2>
+
+  <div *ngIf="tickets.length === 0">
+    <p style="color: white; font-size: 1.5rem;">No tienes entradas compradas.</p>
+  </div>
+
+  <div *ngFor="let ticket of tickets" class="ticket-card">
+    
+    <table class="ticket-table">
+      <thead>
+        <tr>
+          <th colspan="2">🎤 Información del Evento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Evento:</td>
+          <td>{{ ticket.eventName }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="ticket-table">
+      <thead>
+        <tr>
+          <th colspan="2">💳 Detalles de la Compra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cantidad:</td>
+          <td>{{ ticket.cantidad }}</td>
+        </tr>
+        <tr>
+          <td>Precio total:</td>
+          <td>€{{ ticket.precioFinal }}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+</div>

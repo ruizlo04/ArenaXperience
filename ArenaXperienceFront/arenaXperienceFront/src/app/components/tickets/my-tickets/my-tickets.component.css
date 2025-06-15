@@ -1,0 +1,97 @@
+.tickets-section {
+  padding-top: 80px; /* Ajusta según la altura de tu navbar */
+  min-height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40px;
+  background-color: #1a1a1a; /* Fondo oscuro para mejor contraste */
+}
+
+.tickets-title {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2.5rem;
+  color: white;
+  width: 100%;
+}
+
+.ticket-card {
+  background-color: #5a1414;
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: all 0.4s ease;
+  margin-bottom: 30px;
+  padding: 30px;
+  width: 80%;
+  max-width: 600px;
+  cursor: pointer;
+}
+
+.ticket-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.ticket-table th {
+  background-color: #e03724;
+  color: white;
+  font-size: 1.4rem;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+  text-align: left;
+}
+
+.ticket-table td {
+  padding: 12px;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ticket-table tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .tickets-section {
+    padding-top: 70px;
+  }
+  
+  .ticket-card {
+    padding: 20px;
+    width: 85%;
+  }
+
+  .ticket-table th {
+    font-size: 1.2rem;
+  }
+
+  .ticket-table td {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tickets-section {
+    padding-top: 60px;
+  }
+  
+  .ticket-card {
+    width: 90%;
+    padding: 15px;
+  }
+  
+  .tickets-title {
+    font-size: 2rem;
+    margin-top: 10px;
+  }
+}
