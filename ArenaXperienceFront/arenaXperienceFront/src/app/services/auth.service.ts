@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,12 @@ export class AuthService {
         return response;
       })
     );
+  }
+
+  getProfile(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/user/me`, { headers });
   }
 
   getCurrentUser(token: string) {
@@ -57,10 +64,10 @@ export class AuthService {
   }
 
   getUsername(): string | null {
-  if (typeof window !== 'undefined' && localStorage) {  // 💥 Esto evita que se ejecute en SSR
-    return localStorage.getItem('username');
+    if (typeof window !== 'undefined' && localStorage) {  
+      return localStorage.getItem('username');
+    }
+    return null;
   }
-  return null;
-}
 
 }

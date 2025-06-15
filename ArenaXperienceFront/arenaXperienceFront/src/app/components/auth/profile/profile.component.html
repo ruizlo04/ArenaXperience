@@ -1,0 +1,25 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="profile-page">
+  <div *ngIf="loading" class="loading-text">
+    Cargando perfil...
+  </div>
+
+  <div *ngIf="error" class="error-text">
+    {{ error }}
+  </div>
+
+  <div *ngIf="user && !loading" class="profile-card">
+    <div class="profile-header">
+      <h2 class="profile-title">👤 Mi Perfil</h2>
+    </div>
+
+    <div class="profile-content">
+      <p><strong>🧑 Usuario:</strong> {{ user.username }}</p>
+      <p><strong>📧 Email:</strong> {{ user.email || 'No disponible' }}</p>
+      <p><strong>📱 Teléfono:</strong> {{ user.phoneNumber || 'No disponible' }}</p>
+      <p><strong>🛡️ Roles:</strong> {{ user.roles?.join(', ') || 'Usuario' }}</p>
+      <p><strong>🕒 Miembro desde:</strong> {{ user.createdAt | date:'medium' }}</p>
+    </div>
+  </div>
+</div>
