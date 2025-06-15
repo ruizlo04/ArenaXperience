@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // <--- Importa Router
 import { EventService } from '../../../services/event.service';
 import { AuthService } from '../../../services/auth.service';
 
@@ -17,7 +17,8 @@ export class TicketListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
-    private authService: AuthService 
+    private authService: AuthService,
+    private router: Router // <--- Inyecta Router
   ) {}
 
   ngOnInit(): void {
@@ -28,26 +29,24 @@ export class TicketListComponent implements OnInit {
 
     if (this.eventName) {
       this.eventService.getEventsPaginated(token, 0, 100).subscribe({
-      next: (response) => {
-        const evento = response.content.find((e: any) => e.name === this.eventName);
-        if (evento) {
-          this.precioBase = evento.price;
-          this.actualizarPrecioFinal();
-        } else {
-          window.alert('❌ No se pudo encontrar la información del evento.');
+        next: (response) => {
+          const evento = response.content.find((e: any) => e.name === this.eventName);
+          if (evento) {
+            this.precioBase = evento.price;
+            this.actualizarPrecioFinal();
+          } else {
+            window.alert('❌ No se pudo encontrar la información del evento.');
+          }
+        },
+        error: (error) => {
+          console.error('Error al cargar eventos:', error);
+          window.alert('❌ No se pudo cargar la información de los eventos.');
         }
-      },
-      error: (error) => {
-        console.error('Error al cargar eventos:', error);
-        window.alert('❌ No se pudo cargar la información de los eventos.');
-      }
-    });
-
+      });
     } else {
       window.alert('❌ No se recibió el nombre del evento');
     }
   }
-
 
   validarCantidad(): void {
     if (this.cantidad < 1 || isNaN(this.cantidad)) {
@@ -67,6 +66,10 @@ export class TicketListComponent implements OnInit {
       next: (response) => {
         this.precioFinal = response.precioFinal; 
         alert(`✅ Compra exitosa para "${this.eventName}"\nCantidad: ${response.cantidad}\nTotal: €${this.precioFinal}`);
+
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 1000);
       },
       error: (error) => {
         console.error('Error al comprar ticket:', error);
