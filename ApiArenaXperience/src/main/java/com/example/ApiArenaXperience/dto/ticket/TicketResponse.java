@@ -7,13 +7,16 @@ import java.util.UUID;
 public record TicketResponse(
         UUID id,
         String eventName,
-        double price
-){
-        public static TicketResponse of(Ticket ticket) {
-            return new TicketResponse(
-                    ticket.getId(),
-                    ticket.getEvent().getName(),
-                    ticket.getEvent().getPrice()
-            );
-        }
+        int cantidad,
+        double precioFinal
+) {
+    public static TicketResponse of(Ticket ticket) {
+        return new TicketResponse(
+                ticket.getId(),
+                ticket.getEvent().getName(),
+                ticket.getCantidad(),
+                ticket.getPrecioFinal()
+        );
+    }
 }
+
