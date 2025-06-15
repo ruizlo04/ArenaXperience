@@ -1,3 +1,9 @@
+::ng-deep body {
+  background-color: #700000;
+  font-family: 'Creepster', cursive;
+  min-height: 100vh;
+}
+
 .tickets-section {
   padding-top: 80px; /* Ajusta según la altura de tu navbar */
   min-height: 100vh;
@@ -6,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   padding-bottom: 40px;
-  background-color: #1a1a1a; /* Fondo oscuro para mejor contraste */
+  background-color: transparent; /* Fondo ya lo pone body */
 }
 
 .tickets-title {
@@ -65,7 +71,7 @@
   .tickets-section {
     padding-top: 70px;
   }
-  
+
   .ticket-card {
     padding: 20px;
     width: 85%;
@@ -84,12 +90,12 @@
   .tickets-section {
     padding-top: 60px;
   }
-  
+
   .ticket-card {
     width: 90%;
     padding: 15px;
   }
-  
+
   .tickets-title {
     font-size: 2rem;
     margin-top: 10px;
