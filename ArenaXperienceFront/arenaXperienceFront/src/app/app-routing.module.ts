@@ -5,6 +5,7 @@ import { NavInicioSesionComponent } from './components/navbars/nav-inicio-sesion
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ActivateAccountComponent } from './components/auth/activate-account/activate-account.component';
+import { TicketListComponent } from './components/tickets/ticket-list/ticket-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'nav-incio-sesion', component: NavInicioSesionComponent },
   { path: 'activate-account', component: ActivateAccountComponent },
+  { path: 'ticket-list/:eventName', component: TicketListComponent },
   { path: 'home', component: HomeComponent }
 
 ];

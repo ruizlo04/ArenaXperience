@@ -15,12 +15,30 @@ export class AuthService {
     return this.http.post<{ token: string; refreshToken: string }>(
       `${this.apiUrl}/user/auth/login`,
       credentials
+    ).pipe(
+      map(response => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('refreshToken', response.refreshToken);
+        return response;
+      })
     );
   }
 
   getCurrentUser(token: string) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any>(`${this.apiUrl}/user/me`, { headers });
+  }
+
+  getToken(): string {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('token') || '';
+    }
+    return '';
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
   }
 
   register(data: any) {

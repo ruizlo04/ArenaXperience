@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -23,8 +23,20 @@ export class EventService {
     return this.http.post(`${this.baseUrl}/evento/search`, filters, { headers });
   }
 
-  buyTicket(eventName: string, token: string): Observable<any> {
+  buyTicket(eventName: string, token: string, cantidad: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post(`${this.baseUrl}/evento/${encodeURIComponent(eventName)}/comprar-ticket`, {}, { headers });
+    const params = new HttpParams().set('cantidad', cantidad.toString());
+
+    return this.http.post(
+      `${this.baseUrl}/evento/${encodeURIComponent(eventName)}/comprar-ticket`,
+      null,
+      { headers, params }
+    );
   }
+
+  getEventoPorNombre(eventName: string, token: string): Observable<any> {
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get(`${this.baseUrl}/evento/nombre/${encodeURIComponent(eventName)}`, { headers });
+}
+
 }
