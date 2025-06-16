@@ -16,6 +16,7 @@ import { ActivateAccountComponent } from './components/auth/activate-account/act
 import { TicketListComponent } from './components/tickets/ticket-list/ticket-list.component';
 import { MyTicketsComponent } from './components/tickets/my-tickets/my-tickets.component';
 import { ProfileComponent } from './components/auth/profile/profile.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ProfileComponent } from './components/auth/profile/profile.component';
     ActivateAccountComponent,
     TicketListComponent,
     MyTicketsComponent,
-    ProfileComponent
+    ProfileComponent,
+    ChatComponent
   ],
   imports: [
     RouterModule,

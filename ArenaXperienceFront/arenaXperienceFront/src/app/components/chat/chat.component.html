@@ -1,0 +1,56 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="chat-container">
+    <h2>💬 Chat entre Usuarios</h2>
+
+    <div class="chat-wrapper d-flex">
+        <div class="conversation-list me-4">
+            <h4>Conversaciones</h4>
+            <ul class="list-group">
+                <li *ngFor="let conv of conversations" (click)="selectConversation(conv)"
+                    [class.active]="selectedConversation === conv"
+                    class="list-group-item list-group-item-action pointer">
+                    {{ conv.userA }} &amp; {{ conv.userB }}
+                </li>
+            </ul>
+        </div>
+
+        <div class="chat-main flex-grow-1">
+            <div class="chat-form mb-3">
+                <div class="chat-form">
+                    <input type="text" [(ngModel)]="newReceiver" placeholder="Nombre del usuario receptor (nuevo)"
+                        class="form-control mb-2" />
+                    <textarea [(ngModel)]="message" placeholder="Escribe tu mensaje" class="form-control mb-2"
+                        required></textarea>
+                    <button (click)="sendMessage()" class="btn btn-primary">Enviar</button>
+                </div>
+
+            </div>
+
+            <div class="chat-list">
+                <div *ngFor="let chat of filteredChats" class="chat-message border rounded p-2 mb-2"
+                    [ngClass]="{'sent': chat.senderUsername === username, 'received': chat.receiverUsername === username}">
+
+                    <strong>{{ chat.senderUsername }}</strong> ➡️ <strong>{{ chat.receiverUsername }}</strong>
+
+                    <div *ngIf="editingChatId !== chat.id">
+                        <p class="mb-1">{{ chat.message }}</p>
+                        <small>{{ chat.sentAt | date:'short' }}</small>
+                        <div *ngIf="canEdit(chat)" class="chat-actions mt-2">
+                            <button (click)="startEditing(chat)" class="btn btn-sm btn-outline-secondary me-2">✏️
+                                Editar</button>
+                            <button (click)="deleteMessage(chat.id)" class="btn btn-sm btn-outline-danger">🗑️
+                                Eliminar</button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="editingChatId === chat.id" class="mt-2">
+                        <textarea [(ngModel)]="editingMessage" class="form-control mb-2"></textarea>
+                        <button (click)="saveEdit(chat.id)" class="btn btn-sm btn-success me-2">💾 Guardar</button>
+                        <button (click)="cancelEdit()" class="btn btn-sm btn-secondary">❌ Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
