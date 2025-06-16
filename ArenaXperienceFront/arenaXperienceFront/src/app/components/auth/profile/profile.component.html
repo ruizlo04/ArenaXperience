@@ -10,16 +10,51 @@
   </div>
 
   <div *ngIf="user && !loading" class="profile-card">
-    <div class="profile-header">
+    <div class="profile-header d-flex justify-content-between align-items-center">
       <h2 class="profile-title">👤 Mi Perfil</h2>
+      <button class="btn btn-warning" (click)="toggleEdit()">
+        {{ editing ? 'Cancelar' : 'Editar' }}
+      </button>
     </div>
 
-    <div class="profile-content">
+    <div class="profile-content" *ngIf="!editing">
       <p><strong>🧑 Usuario:</strong> {{ user.username }}</p>
       <p><strong>📧 Email:</strong> {{ user.email || 'No disponible' }}</p>
       <p><strong>📱 Teléfono:</strong> {{ user.phoneNumber || 'No disponible' }}</p>
       <p><strong>🛡️ Rol:</strong> {{ user.roles?.join(', ') || 'Usuario' }}</p>
       <p><strong>🕒 Miembro desde:</strong> {{ user.createdAt | date:'medium' }}</p>
+    </div>
+
+    <!-- Formulario de edición -->
+    <div class="profile-content" *ngIf="editing">
+      <form (ngSubmit)="saveChanges()">
+        <div class="mb-2">
+          <label>Email:</label>
+          <input type="email" class="form-control" [(ngModel)]="editedUser.email" name="email" required>
+        </div>
+
+        <div class="mb-2">
+          <label>Confirmar Email:</label>
+          <input type="email" class="form-control" [(ngModel)]="editedUser.verifyEmail" name="verifyEmail" required>
+        </div>
+
+        <div class="mb-2">
+          <label>Nueva contraseña:</label>
+          <input type="password" class="form-control" [(ngModel)]="editedUser.password" name="password" required>
+        </div>
+
+        <div class="mb-2">
+          <label>Confirmar contraseña:</label>
+          <input type="password" class="form-control" [(ngModel)]="editedUser.verifyPassword" name="verifyPassword" required>
+        </div>
+
+        <div class="mb-2">
+          <label>Teléfono:</label>
+          <input type="text" class="form-control" [(ngModel)]="editedUser.phoneNumber" name="phoneNumber">
+        </div>
+
+        <button class="btn btn-success mt-2" type="submit">Guardar Cambios</button>
+      </form>
     </div>
   </div>
 </div>
