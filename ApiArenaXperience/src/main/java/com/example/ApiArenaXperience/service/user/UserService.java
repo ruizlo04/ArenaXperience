@@ -58,6 +58,7 @@ public class UserService {
                 .password(passwordEncoder.encode(createUserRequest.password()))
                 .email(createUserRequest.email())
                 .phoneNumber(createUserRequest.phoneNumber())
+                .phoneNumber(createUserRequest.phoneNumber())
                 .activationToken(generateRandomActivationCode())
                 .createdAt(Instant.now())
                 .enabled(false)
