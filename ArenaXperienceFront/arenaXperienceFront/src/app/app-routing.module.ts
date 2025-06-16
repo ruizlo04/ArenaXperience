@@ -7,6 +7,7 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { ActivateAccountComponent } from './components/auth/activate-account/activate-account.component';
 import { TicketListComponent } from './components/tickets/ticket-list/ticket-list.component';
 import { MyTicketsComponent } from './components/tickets/my-tickets/my-tickets.component';
+import { ProfileComponent } from './components/auth/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'activate-account', component: ActivateAccountComponent },
   { path: 'ticket-list/:eventName', component: TicketListComponent },
   { path: 'my-tickets', component: MyTicketsComponent },
+  { path: 'profile', component: ProfileComponent } ,
   { path: 'home', component: HomeComponent }
 
 ];
