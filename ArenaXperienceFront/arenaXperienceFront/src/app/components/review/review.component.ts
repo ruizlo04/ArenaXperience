@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReviewService } from '../../services/review.service';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../services/auth.service'; // Importa AuthService
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-review',
@@ -20,6 +20,10 @@ export class ReviewComponent implements OnInit {
   totalPages = 0;
   totalReviews = 0;
   currentUser: any;
+
+  // Para control de edición:
+  editingReviewId: string | null = null;
+  editedReview = { rating: 0, comment: '' };
 
   constructor(
     private reviewService: ReviewService,
@@ -46,7 +50,6 @@ export class ReviewComponent implements OnInit {
       }
     });
   }
-
 
   wordCount(): number {
     return this.newReview.comment ? this.newReview.comment.trim().split(/\s+/).length : 0;
@@ -134,5 +137,49 @@ export class ReviewComponent implements OnInit {
 
   getPagesArray(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i);
+  }
+
+
+  startEditing(review: any): void {
+    this.editingReviewId = review.id;
+    this.editedReview.rating = review.rating;
+    this.editedReview.comment = review.comment;
+  }
+
+  cancelEditing(): void {
+    this.editingReviewId = null;
+    this.editedReview = { rating: 0, comment: '' };
+  }
+
+  saveEdit(reviewId: string): void {
+    if (
+      this.editedReview.rating < 0 || this.editedReview.rating > 10 ||
+      !this.editedReview.comment.trim() ||
+      this.editedReview.comment.trim().split(/\s+/).length > 150
+    ) {
+      this.mensajeError = 'Datos de la reseña inválidos o fuera de rango';
+      setTimeout(() => this.mensajeError = '', 3000);
+      return;
+    }
+
+    this.isLoading = true;
+    this.reviewService.editarResena(reviewId, {
+      rating: this.editedReview.rating,
+      comment: this.editedReview.comment.trim()
+    }).subscribe({
+      next: () => {
+        this.mensajeExito = 'Reseña editada exitosamente.';
+        this.editingReviewId = null;
+        this.editedReview = { rating: 0, comment: '' };
+        this.getReviews();
+        setTimeout(() => this.mensajeExito = '', 3000);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.mensajeError = err.message || 'Error al editar reseña';
+        setTimeout(() => this.mensajeError = '', 5000);
+        this.isLoading = false;
+      }
+    });
   }
 }
