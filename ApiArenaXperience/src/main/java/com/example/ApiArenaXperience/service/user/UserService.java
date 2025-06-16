@@ -113,16 +113,22 @@ public class UserService {
 
         Optional<Usuario> userToEdit = userRepository.findFirstByUsername(username);
 
-        if (userToEdit.isEmpty()){
+        if (userToEdit.isEmpty()) {
             throw new UsersNotFoundException("No se ha encontrado ese Usuario");
         }
 
-        userToEdit.get().setEmail(editUserCmd.email());
-        userToEdit.get().setPassword(editUserCmd.password());
-        userToEdit.get().setPhoneNumber(editUserCmd.phoneNumber());
+        Usuario user = userToEdit.get();
 
-        return userRepository.save(userToEdit.get());
+        user.setEmail(editUserCmd.email());
+        user.setPhoneNumber(editUserCmd.phoneNumber());
+
+        if (editUserCmd.password() != null && !editUserCmd.password().isBlank()) {
+            user.setPassword(passwordEncoder.encode(editUserCmd.password()));
+        }
+
+        return userRepository.save(user);
     }
+
 
     public Usuario editUserByAdmin(String username, EditUserCmd editUserCmd) {
 
