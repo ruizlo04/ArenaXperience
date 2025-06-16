@@ -9,6 +9,7 @@ import { TicketListComponent } from './components/tickets/ticket-list/ticket-lis
 import { MyTicketsComponent } from './components/tickets/my-tickets/my-tickets.component';
 import { ProfileComponent } from './components/auth/profile/profile.component';
 import { ChatComponent } from './components/chat/chat.component'; 
+import { ReviewComponent } from './components/review/review.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'my-tickets', component: MyTicketsComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'reviews/:eventName', component: ReviewComponent },
   { path: 'chat', component: ChatComponent } 
 ];
 

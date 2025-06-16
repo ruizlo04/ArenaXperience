@@ -1,0 +1,122 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="review-container">
+  <div class="card review-card">
+    <div class="card-body p-4">
+
+      <!-- Título principal -->
+      <h4 class="card-title text-center mb-4 text-uppercase text-white">
+        Reseñas para {{eventName}}
+      </h4>
+
+      <!-- Mensajes de error y éxito -->
+      <div *ngIf="mensajeError" class="alert alert-danger text-center mt-3 fade-in text-white">
+        <i class="fas fa-exclamation-circle me-2"></i>{{ mensajeError }}
+      </div>
+
+      <div *ngIf="mensajeExito" class="alert alert-success text-center mt-3 fade-in text-white">
+        <i class="fas fa-check-circle me-2"></i>{{ mensajeExito }}
+      </div>
+
+      <!-- Formulario de reseña -->
+      <div class="review-form mb-5 p-4 rounded-3">
+        <!-- Calificación -->
+        <div class="mb-4">
+          <label class="form-label h5 text-white">Tu calificación (0-10)</label>
+          <div class="d-flex align-items-center">
+            <div class="rating-stars">
+              <ng-container *ngFor="let star of [0,1,2,3,4,5,6,7,8,9,10]">
+                <i class="fas fa-star text-white"
+                   [class.filled]="newReview.rating >= star"
+                   [class.empty]="newReview.rating < star"
+                   (click)="newReview.rating = star"></i>
+              </ng-container>
+            </div>
+            <span class="rating-value ms-3 text-white">{{newReview.rating}}/10</span>
+          </div>
+        </div>
+
+        <!-- Comentario -->
+        <div class="mb-4">
+          <label class="form-label h5 text-white">Comentario</label>
+          <textarea [(ngModel)]="newReview.comment"
+                    class="form-control review-textarea"
+                    rows="4"
+                    [disabled]="isLoading"
+                    placeholder="Escribe tu reseña aquí..."></textarea>
+          <small class="text-white-50 word-counter">{{wordCount()}}/150 palabras</small>
+        </div>
+
+        <!-- Botón de envío -->
+        <button class="btn submit-btn w-100 py-2 text-white"
+                (click)="addReview()"
+                [disabled]="isLoading || !isFormValid()">
+          <span *ngIf="!isLoading">
+            <i class="fas fa-paper-plane me-2"></i>Enviar Reseña
+          </span>
+          <span *ngIf="isLoading">
+            <i class="fas fa-spinner fa-spin me-2"></i>Procesando...
+          </span>
+        </button>
+      </div>
+
+      <!-- Sección de reseñas -->
+      <div class="reviews-section">
+        <h5 class="section-title text-center mb-4 text-white">
+          <i class="fas fa-comments me-2"></i>Reseñas ({{totalReviews}})
+        </h5>
+
+        <!-- Cargando -->
+        <div *ngIf="isLoading && reviews.length === 0" class="text-center py-5 text-white">
+          <div class="spinner-border text-white" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+
+        <!-- Sin reseñas -->
+        <div *ngIf="!isLoading && reviews.length === 0" class="alert alert-info text-center text-white">
+          <i class="fas fa-info-circle me-2"></i>No hay reseñas para este evento aún. ¡Sé el primero en opinar!
+        </div>
+
+        <!-- Lista de reseñas -->
+        <div *ngFor="let review of reviews" class="review-item mb-4 p-3 rounded-3 text-white">
+          <div class="review-header d-flex justify-content-between align-items-center mb-2">
+            <div class="review-rating">
+              <span class="badge rating-badge text-white">{{review.rating}}/10</span>
+            </div>
+            <div class="review-meta text-end">
+              <small class="text-white">
+                <i class="fas fa-user me-1"></i>{{review.user?.username || 'Anónimo'}}
+                <i class="fas fa-clock ms-2 me-1"></i>{{review.createdAt | date:'mediumDate'}}
+              </small>
+            </div>
+          </div>
+          <p class="review-content mb-0 text-white">{{review.comment}}</p>
+        </div>
+
+        <!-- Paginación -->
+        <div *ngIf="totalPages > 1" class="mt-4">
+          <nav aria-label="Paginación de reseñas">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 0">
+                <a class="page-link text-white" (click)="changePage(currentPage - 1)" aria-label="Anterior">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+              </li>
+              <li *ngFor="let page of getPagesArray(); let i = index"
+                  class="page-item" [class.active]="currentPage === i">
+                <a class="page-link text-white" (click)="changePage(i)">{{i + 1}}</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+                <a class="page-link text-white" (click)="changePage(currentPage + 1)" aria-label="Siguiente">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
