@@ -18,7 +18,7 @@
       <p><strong>🧑 Usuario:</strong> {{ user.username }}</p>
       <p><strong>📧 Email:</strong> {{ user.email || 'No disponible' }}</p>
       <p><strong>📱 Teléfono:</strong> {{ user.phoneNumber || 'No disponible' }}</p>
-      <p><strong>🛡️ Roles:</strong> {{ user.roles?.join(', ') || 'Usuario' }}</p>
+      <p><strong>🛡️ Rol:</strong> {{ user.roles?.join(', ') || 'Usuario' }}</p>
       <p><strong>🕒 Miembro desde:</strong> {{ user.createdAt | date:'medium' }}</p>
     </div>
   </div>
