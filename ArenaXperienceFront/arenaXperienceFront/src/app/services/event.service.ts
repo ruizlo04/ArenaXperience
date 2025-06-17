@@ -10,6 +10,13 @@ export class EventService {
 
   constructor(private http: HttpClient) {}
 
+  getToken(): string {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('token') || '';
+    }
+    return '';
+  }
+
   getEventsPaginated(token: string, page: number, size: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.baseUrl}/evento/?page=${page}&size=${size}`, { headers });
@@ -64,5 +71,12 @@ export class EventService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.put(`${this.baseUrl}/evento/editar/${encodeURIComponent(eventName)}`, data, { headers });
   }
+
+  deleteEvent(eventName: string): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.baseUrl}/evento/eliminar/${encodeURIComponent(eventName)}`, { headers });
+  }
+
 
 }
