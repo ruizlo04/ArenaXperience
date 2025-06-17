@@ -18,6 +18,7 @@ import { MyTicketsComponent } from './components/tickets/my-tickets/my-tickets.c
 import { ProfileComponent } from './components/auth/profile/profile.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ReviewComponent } from './components/review/review.component';
+import { CrearEventoComponent } from './components/crear-evento/crear-evento.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ReviewComponent } from './components/review/review.component';
     MyTicketsComponent,
     ProfileComponent,
     ChatComponent,
-    ReviewComponent
+    ReviewComponent,
+    CrearEventoComponent
   ],
   imports: [
     RouterModule,

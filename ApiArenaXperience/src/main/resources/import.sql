@@ -28,16 +28,16 @@ VALUES ('550e8400-e29b-41d4-a716-446655440000', 'ADMIN'),
 
 INSERT INTO event_entity (id, name, date, capacity, price, precio_total_recaudado, admin_id, file)
 VALUES
-('550e8400-e29b-41d4-a716-446655440001', 'Barcelona-Real Madrid', '2025-07-20', 750, 20.0, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440002', 'Valencia-Atlético Madrid', '2025-08-10', 600, 19.5, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440003', 'Sevilla-Villarreal', '2025-09-05', 700, 15.0, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440004', 'Real Sociedad-Athletic Bilbao', '2025-10-12', 650, 20.0, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440005', 'Celta de Vigo-Granada', '2025-11-22', 600, 16.5, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440016', 'Getafe-Betis', '2025-12-01', 500, 18.0, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440017', 'Alavés-Espanyol', '2025-12-15', 550, 17.5, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440018', 'Mallorca-Cádiz', '2026-01-10', 600, 16.0, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440019', 'Osasuna-Rayo Vallecano', '2026-02-05', 650, 19.0, 0, '550e8400-e29b-41d4-a716-446655440000', NULL),
-('550e8400-e29b-41d4-a716-446655440020', 'Elche-Levante', '2026-03-01', 700, 20.5, 0, '550e8400-e29b-41d4-a716-446655440000', NULL);
+('550e8400-e29b-41d4-a716-446655440001', 'Barcelona-Real Madrid', '2025-07-20', 750, 20.0, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Forcejeo_Real_Madrid_-_FC_Barcelona.jpg/1200px-Forcejeo_Real_Madrid_-_FC_Barcelona.jpg'),
+('550e8400-e29b-41d4-a716-446655440002', 'Valencia-Atlético Madrid', '2025-08-10', 600, 19.5, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://cdn.vox-cdn.com/thumbor/BLgfFZrBzjGEgQY-bk0-GxnQMsc=/0x0:4000x2667/1200x800/filters:focal(2144x883:2784x1523)/cdn.vox-cdn.com/uploads/chorus_image/image/65507429/1182072956.jpg.0.jpg'),
+('550e8400-e29b-41d4-a716-446655440003', 'Sevilla-Villarreal', '2025-09-05', 700, 15.0, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://s2.abcstatics.com/abc/www/multimedia/deportes/2025/05/18/sevilla-villarreal-doblado-U61031631141mgI-1024x512@diario_abc.JPG'),
+('550e8400-e29b-41d4-a716-446655440004', 'Real Sociedad-Athletic Bilbao', '2025-10-12', 650, 20.0, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://cdn.athletic-club.eus/uploads/2023/09/WhatsApp%20Image%202023-09-30%20at%2021.12.45%20(2).jpg'),
+('550e8400-e29b-41d4-a716-446655440005', 'Celta de Vigo-Granada', '2025-11-22', 600, 16.5, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://www.granadadigital.es/wp-content/uploads/2024/05/Foto-Antonio-L-Juarez-Granada-CF-Celta-de-Vigo-37-1010x673.jpg'),
+('550e8400-e29b-41d4-a716-446655440016', 'Getafe-Betis', '2025-12-01', 500, 18.0, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://image-service.onefootball.com/transform?w=280&h=210&dpr=2&image=https%3A%2F%2Fagentelibredigital.com%2Fwp-content%2Fuploads%2F2025%2F02%2Fgetafe-cf-v-real-betis-balompie-la-liga-ea-sports-scaled.jpg'),
+('550e8400-e29b-41d4-a716-446655440017', 'Alavés-Espanyol', '2025-12-15', 550, 17.5, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://www.mundodeportivo.com/files/image_449_465/files/fp/uploads/2025/02/22/67b9f2d3a3541.r_d.2495-1381-898.jpeg'),
+('550e8400-e29b-41d4-a716-446655440018', 'Mallorca-Cádiz', '2026-01-10', 600, 16.0, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://estaticos-cdn.prensaiberica.es/clip/3d6bcca2-924e-4fa1-aee9-1941d0baf2c7_source-aspect-ratio_default_0.jpg'),
+('550e8400-e29b-41d4-a716-446655440019', 'Osasuna-Rayo Vallecano', '2026-02-05', 650, 19.0, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://e00-marca.uecdn.es/assets/multimedia/imagenes/2023/04/14/16815053250571.jpg'),
+('550e8400-e29b-41d4-a716-446655440020', 'Elche-Levante', '2026-03-01', 700, 20.5, 0, '550e8400-e29b-41d4-a716-446655440000', 'https://imgresizer.eurosport.com/unsafe/1200x0/filters:format(jpeg)/origin-imgresizer.eurosport.com/2021/09/18/3222614-65969548-2560-1440.jpg');
 
 
 INSERT INTO review_entity (id, comment, rating, event_id, user_id)
