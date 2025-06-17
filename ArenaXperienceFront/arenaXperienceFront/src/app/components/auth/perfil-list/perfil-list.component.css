@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 800px;
   text-align: center;
-  margin-top: 80px; /* <-- Aquí agregamos espacio para separar del navbar */
+  margin-top: 80px; 
 }
 
 .profile-list-title {
@@ -216,4 +216,27 @@
 
 .btn-delete-user:hover {
   color: #c0392b;
+}
+
+.back-button-container {
+  position: fixed;
+  top: 80px; 
+  left: 20px;
+  z-index: 100;
+  padding: 10px;
+  background-color: rgba(112, 0, 0, 0.8);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.back-button-container:hover {
+  background-color: rgba(112, 0, 0, 1);
+  transform: translateX(-3px);
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  margin: 100px auto 0;
 }

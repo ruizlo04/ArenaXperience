@@ -1,5 +1,5 @@
 ::ng-deep body {
-  background-color: #700000; /* Fondo rojo oscuro */
+  background-color: #700000; 
   font-family: 'Creepster', cursive;
   margin: 0;
   padding: 0;
@@ -13,7 +13,7 @@ html, body {
 }
 
 .profile-page {
-  background-color: transparent; /* transparente para que se vea el body */
+  background-color: transparent;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -64,4 +64,27 @@ html, body {
   .profile-card {
     padding: 1.5rem;
   }
+}
+
+.back-button-container {
+  position: fixed;
+  top: 80px; 
+  left: 20px;
+  z-index: 100;
+  padding: 10px;
+  background-color: rgba(112, 0, 0, 0.8);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.back-button-container:hover {
+  background-color: rgba(112, 0, 0, 1);
+  transform: translateX(-3px);
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  margin: 100px auto 0;
 }

@@ -1,5 +1,12 @@
 <app-navbar-principal></app-navbar-principal>
 
+<div class="back-button-container">
+  <a routerLink="/home" class="text-white text-decoration-none d-flex align-items-center">
+    <i class="bi bi-arrow-left me-2 fs-4"></i>
+    <span class="fs-5">Volver al inicio</span>
+  </a>
+</div>
+
 <div class="review-container">
   <div class="card review-card">
     <div class="card-body p-4">
@@ -22,10 +29,8 @@
           <div class="d-flex align-items-center">
             <div class="rating-stars">
               <ng-container *ngFor="let star of [0,1,2,3,4,5,6,7,8,9,10]">
-                <i class="fas fa-star text-white"
-                   [class.filled]="newReview.rating >= star"
-                   [class.empty]="newReview.rating < star"
-                   (click)="newReview.rating = star"></i>
+                <i class="fas fa-star text-white" [class.filled]="newReview.rating >= star"
+                  [class.empty]="newReview.rating < star" (click)="newReview.rating = star"></i>
               </ng-container>
             </div>
             <span class="rating-value ms-3 text-white">{{ newReview.rating }}/10</span>
@@ -34,17 +39,13 @@
 
         <div class="mb-4">
           <label class="form-label h5 text-white">Comentario</label>
-          <textarea [(ngModel)]="newReview.comment"
-                    class="form-control review-textarea"
-                    rows="4"
-                    [disabled]="isLoading"
-                    placeholder="Escribe tu reseña aquí..."></textarea>
+          <textarea [(ngModel)]="newReview.comment" class="form-control review-textarea" rows="4" [disabled]="isLoading"
+            placeholder="Escribe tu reseña aquí..."></textarea>
           <small class="text-white-50 word-counter">{{ wordCount() }}/150 palabras</small>
         </div>
 
-        <button class="btn submit-btn w-100 py-2 text-white"
-                (click)="addReview()"
-                [disabled]="isLoading || !isFormValid()">
+        <button class="btn submit-btn w-100 py-2 text-white" (click)="addReview()"
+          [disabled]="isLoading || !isFormValid()">
           <span *ngIf="!isLoading">
             <i class="fas fa-paper-plane me-2"></i>Enviar Reseña
           </span>
@@ -120,8 +121,8 @@
                   <i class="fas fa-chevron-left"></i>
                 </a>
               </li>
-              <li *ngFor="let page of getPagesArray(); let i = index"
-                  class="page-item" [class.active]="currentPage === i">
+              <li *ngFor="let page of getPagesArray(); let i = index" class="page-item"
+                [class.active]="currentPage === i">
                 <a class="page-link text-white" (click)="changePage(i)">{{ i + 1 }}</a>
               </li>
               <li class="page-item" [class.disabled]="currentPage === totalPages - 1">

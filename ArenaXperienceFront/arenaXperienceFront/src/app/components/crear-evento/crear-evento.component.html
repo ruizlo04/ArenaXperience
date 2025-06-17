@@ -1,5 +1,12 @@
 <app-navbar-principal></app-navbar-principal>
 
+<div class="container mt-3 mb-2">
+  <a routerLink="/home" class="text-white text-decoration-none d-flex align-items-center">
+    <i class="bi bi-arrow-left me-2 fs-4"></i>
+    <span class="fs-5">Volver al inicio</span>
+  </a>
+</div>
+
 <form class="crear-evento-form" [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
   <div>
     <label>Nombre del evento:</label>
