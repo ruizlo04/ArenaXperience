@@ -7,12 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarPrincipalComponent implements OnInit {
   isSocioOrAdmin: boolean = false;
+  isAdmin: boolean = false;
   currentUser: string = '';
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       const role = localStorage.getItem('role');
       this.isSocioOrAdmin = role === 'SOCIO' || role === 'ADMIN';
+      this.isAdmin = role === 'ADMIN';
 
       const username = localStorage.getItem('username');
       if (username) {

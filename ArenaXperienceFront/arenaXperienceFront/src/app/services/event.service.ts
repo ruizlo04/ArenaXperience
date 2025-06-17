@@ -47,4 +47,17 @@ export class EventService {
     });
   }
 
+  crearEvento(evento: any, file: File, token: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('event', new Blob([JSON.stringify(evento)], { type: 'application/json' }));
+    formData.append('file', file);
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post(`${this.baseUrl}/evento/register`, formData, { 
+      headers,
+      observe: 'response' 
+    });
+  }
+
 }
