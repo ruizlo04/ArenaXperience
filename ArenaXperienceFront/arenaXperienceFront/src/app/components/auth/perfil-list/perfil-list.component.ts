@@ -86,6 +86,24 @@ export class PerfilListComponent implements OnInit {
     });
   }
 
+  confirmDelete(username: string): void {
+    if (confirm(`¿Estás seguro de que deseas eliminar al usuario ${username}? Esta acción no se puede deshacer.`)) {
+      this.deleteUser(username);
+    }
+  }
+
+  deleteUser(username: string): void {
+    this.authService.deleteUserByAdmin(username).subscribe({
+      next: () => {
+        alert('Usuario eliminado correctamente');
+        this.loadAllUsers(this.currentPage);
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error al eliminar usuario');
+      }
+    });
+  }
 
   cancelEdit(): void {
     this.editedUser = null;

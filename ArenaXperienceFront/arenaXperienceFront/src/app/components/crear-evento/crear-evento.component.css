@@ -107,3 +107,37 @@
 .submitted .ng-invalid {
   border-color: #e50914 !important;
 }
+
+::ng-deep body {
+  background-color: #700000;
+  font-family: 'Creepster', cursive;
+  min-height: 100vh;
+  padding-top: 80px;
+  box-sizing: border-box;
+}
+
+.ticket-container {
+  min-height: calc(100vh - 80px);
+  padding-bottom: 3rem;
+}
+
+app-navbar-principal {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+.profile-container {
+  margin-top: 20px;
+  padding: 20px;
+  min-height: calc(100vh - 140px);
+}
+
+.mat-dialog-container {
+  overflow: visible !important;
+}

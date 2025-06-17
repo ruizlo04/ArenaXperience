@@ -102,5 +102,10 @@ export class AuthService {
     }, { headers });
   }
 
-
+  deleteUserByAdmin(username: string): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.apiUrl}/user/delete/admin/${username}`, { headers });
+  }
+  
 }
