@@ -8,14 +8,17 @@ public record GetTicketDto(
         UUID id,
         UUID userId,
         String nombreEvento,
-        double price
+        int cantidad,
+        double precioFinal
 ) {
     public static GetTicketDto of(Ticket ticket) {
         return new GetTicketDto(
                 ticket.getId(),
                 ticket.getUser().getId(),
                 ticket.getEvent().getName(),
-                ticket.getEvent().getPrice()
+                ticket.getCantidad(),
+                ticket.getPrecioFinal()
         );
     }
 }
+

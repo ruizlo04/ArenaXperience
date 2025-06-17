@@ -1,0 +1,28 @@
+<app-navbar-principal></app-navbar-principal>
+
+<form class="editar-evento-form" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+  <h2 class="text-center mb-4" style="color: #700000; font-size: 2rem;">Editar Evento: {{ eventName }}</h2>
+
+  <div>
+    <label>Fecha:</label>
+    <input formControlName="date" type="date" required>
+    <div *ngIf="eventForm.get('date')?.errors && eventForm.get('date')?.touched" class="error-message">
+      <div *ngIf="eventForm.get('date')?.hasError('required')">La fecha es requerida</div>
+      <div *ngIf="eventForm.get('date')?.hasError('pastDate')">La fecha no puede estar en el pasado</div>
+    </div>
+  </div>
+
+  <div>
+    <label>Capacidad:</label>
+    <input formControlName="capacity" type="number" placeholder="500-800">
+    <div *ngIf="eventForm.get('capacity')?.errors && eventForm.get('capacity')?.touched" class="error-message">
+      <div *ngIf="eventForm.get('capacity')?.hasError('required')">La capacidad es requerida</div>
+      <div *ngIf="eventForm.get('capacity')?.hasError('min')">Mínimo 500 personas</div>
+      <div *ngIf="eventForm.get('capacity')?.hasError('max')">Máximo 800 personas</div>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="eventForm.invalid">Guardar Cambios</button>
+</form>
+
+<div class="mensaje" *ngIf="mensaje">{{ mensaje }}</div>

@@ -1,0 +1,85 @@
+<div class="back-button-container">
+    <a routerLink="/home" class="text-white text-decoration-none d-flex align-items-center">
+        <i class="bi bi-arrow-left me-2 fs-4"></i>
+        <span class="fs-5">Volver al inicio</span>
+    </a>
+</div>
+
+<div class="login-page">
+  <div class="card login-container">
+    <div class="card-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Icono usuario" width="60" class="mb-3" />
+      <h2 class="card-title">Hazte Usuario y Únete al Club</h2>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row g-3">
+
+          <div class="col-md-6">
+            <div *ngIf="getError('username')" class="text-danger small mb-1">
+              {{ getError('username') }}
+            </div>
+            <label class="form-label">Nombre de Usuario</label>
+            <input
+              type="text"
+              formControlName="username"
+              class="form-control"
+              placeholder="NombreUsuario"
+              (blur)="registerForm.get('username')?.markAsTouched()"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <div *ngIf="getError('email')" class="text-danger small mb-1">
+              {{ getError('email') }}
+            </div>
+            <label class="form-label">Email</label>
+            <input type="email" formControlName="email" class="form-control" placeholder="Correo electrónico" />
+          </div>
+
+          <div class="col-md-6">
+            <div *ngIf="getError('verifyEmail')" class="text-danger small mb-1">
+              {{ getError('verifyEmail') }}
+            </div>
+            <label class="form-label">Confirmar Email</label>
+            <input type="email" formControlName="verifyEmail" class="form-control" placeholder="Repite tu correo" />
+          </div>
+
+          <div class="col-md-6">
+            <div *ngIf="getError('phoneNumber')" class="text-danger small mb-1">
+              {{ getError('phoneNumber') }}
+            </div>
+            <label class="form-label">Teléfono</label>
+            <input type="text" formControlName="phoneNumber" class="form-control" placeholder="Teléfono" />
+          </div>
+
+          <div class="col-md-6">
+            <div *ngIf="getError('password')" class="text-danger small mb-1">
+              {{ getError('password') }}
+            </div>
+            <label class="form-label">Contraseña</label>
+            <input type="password" formControlName="password" class="form-control" placeholder="••••••" />
+          </div>
+
+          <div class="col-md-6">
+            <div *ngIf="getError('verifyPassword')" class="text-danger small mb-1">
+              {{ getError('verifyPassword') }}
+            </div>
+            <label class="form-label">Confirmar Contraseña</label>
+            <input type="password" formControlName="verifyPassword" class="form-control" placeholder="Repite la contraseña" />
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-login mt-4">
+          Registrarse
+        </button>
+
+        <div *ngIf="error" class="alert alert-danger mt-3 text-center">
+          {{ error }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

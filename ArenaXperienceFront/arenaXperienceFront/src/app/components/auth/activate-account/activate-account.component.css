@@ -1,0 +1,93 @@
+.login-page {
+  background-color: #700000;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: 'Creepster', cursive;
+}
+
+.card.login-container {
+  background: linear-gradient(135deg, #e03724 0%, #e11f0e 100%);
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(62, 11, 6, 0.338);
+  color: white;
+  text-align: center;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.card-header {
+  padding: 1rem 1rem 0;
+}
+
+.card-title {
+  font-size: 2.4rem;
+  font-weight: bold;
+  text-shadow: 2px 2px black;
+  margin-bottom: 1rem;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.form-label {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.form-control {
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 14px 18px;
+  border: none;
+  color: black;
+  font-size: 1.05rem;
+}
+
+.form-control:focus {
+  background-color: white;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 120, 120, 0.4);
+}
+
+.btn-login {
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  width: 100%;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.btn-login:hover {
+  background-color: #ffffff;
+  color: black;
+  box-shadow: 0 8px 24px rgba(202, 27, 8, 0.4);
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  text-shadow: none;
+}
+
+@media (max-width: 576px) {
+  .card.login-container {
+    padding: 1.5rem;
+  }
+}

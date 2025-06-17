@@ -1,0 +1,58 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="container mt-3 mb-2">
+  <a routerLink="/home" class="text-white text-decoration-none d-flex align-items-center">
+    <i class="bi bi-arrow-left me-2 fs-4"></i>
+    <span class="fs-5">Volver al inicio</span>
+  </a>
+</div>
+
+<form class="crear-evento-form" [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label>Nombre del evento:</label>
+    <input type="text" formControlName="name" placeholder="Ej: Concierto-Banda">
+    <div *ngIf="eventoForm.get('name')?.errors && eventoForm.get('name')?.touched" class="error-message">
+      <div *ngIf="eventoForm.get('name')?.hasError('required')">El nombre del evento es requerido</div>
+      <div *ngIf="eventoForm.get('name')?.hasError('minlength')">Debe tener al menos 7 caracteres</div>
+      <div *ngIf="eventoForm.get('name')?.hasError('pattern')">Debe contener un guion (-) en el medio y al menos 3 caracteres antes y después</div>
+    </div>
+  </div>
+
+  <div>
+    <label>Fecha:</label>
+    <input formControlName="date" type="date" required>
+    <div *ngIf="eventoForm.get('date')?.errors && eventoForm.get('date')?.touched" class="error-message">
+      <div *ngIf="eventoForm.get('date')?.hasError('required')">La fecha es requerida</div>
+      <div *ngIf="eventoForm.get('date')?.hasError('pastDate')">La fecha no puede estar en el pasado</div>
+    </div>
+  </div>
+
+  <div>
+    <label>Capacidad:</label>
+    <input formControlName="capacity" type="number" placeholder="500-800">
+    <div *ngIf="eventoForm.get('capacity')?.errors && eventoForm.get('capacity')?.touched" class="error-message">
+      <div *ngIf="eventoForm.get('capacity')?.hasError('required')">La capacidad es requerida</div>
+      <div *ngIf="eventoForm.get('capacity')?.hasError('min')">Mínimo 500 personas</div>
+      <div *ngIf="eventoForm.get('capacity')?.hasError('max')">Máximo 800 personas</div>
+    </div>
+  </div>
+
+  <div>
+    <label>Precio:</label>
+    <input formControlName="price" type="number" placeholder="Precio" step="0.01">
+    <div *ngIf="eventoForm.get('price')?.errors && eventoForm.get('price')?.touched" class="error-message">
+      <div *ngIf="eventoForm.get('price')?.hasError('required')">El precio es requerido</div>
+      <div *ngIf="eventoForm.get('price')?.hasError('min')">El precio no puede ser negativo</div>
+    </div>
+  </div>
+
+  <div>
+    <label>Imagen:</label>
+    <input type="file" (change)="onFileChange($event)" required>
+    <div *ngIf="!file && submitted" class="error-message">La imagen es requerida</div>
+  </div>
+
+  <button type="submit" [disabled]="!eventoForm.valid || !file">Crear Evento</button>
+</form>
+
+<div class="mensaje" *ngIf="mensaje">{{ mensaje }}</div>

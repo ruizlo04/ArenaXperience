@@ -58,19 +58,19 @@ public class EventoController {
             @ApiResponse(responseCode = "204", description = "No se encontraron eventos con los filtros aplicados"),
             @ApiResponse(responseCode = "400", description = "Solicitud inválida, verifique los parámetros enviados")
     })
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<List<GetListEventoFilterDto>> searchEvents(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Criterios para buscar eventos", required = true,
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = GetListEventoFilterDto.class),
                             examples = @ExampleObject(value = """
-                                {
-                                    "name": "Concierto Rock",
-                                    "date": "2024-06-15",
-                                    "capacity": 5000
-                                }
-                                """)))
+                            {
+                                "name": "Partido 1",
+                                "date": "2025-06-15",
+                                "capacity": 500
+                            }
+                            """)))
             @RequestBody @Valid GetListEventoFilterDto filter) {
 
         List<GetListEventoFilterDto> eventos = eventoService.buscarEventos(filter.name(), filter.date(), filter.capacity())
@@ -88,6 +88,7 @@ public class EventoController {
 
         return ResponseEntity.ok(eventos);
     }
+
 
     @Operation(summary = "Registrar un evento", description = "Crea un nuevo evento en la aplicación")
     @ApiResponses({
@@ -161,13 +162,14 @@ public class EventoController {
     })
     @PostMapping("/{eventName}/comprar-ticket")
     public ResponseEntity<GetTicketDto> comprarTicket(
-            @Parameter(description = "Nombre del evento para el cual se comprará el ticket", required = true)
             @PathVariable String eventName,
+            @RequestParam(defaultValue = "1") int cantidad,
             @AuthenticationPrincipal Usuario usuario) {
 
-        Ticket ticket = eventoService.comprarTicket(eventName, usuario.getId());
+        Ticket ticket = eventoService.comprarTicket(eventName, usuario.getId(), cantidad);
         return ResponseEntity.ok(GetTicketDto.of(ticket));
     }
+
 
     @Operation(
             summary = "Obtener tickets de un evento",

@@ -1,0 +1,61 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="back-button-container">
+  <a routerLink="/home" class="text-white text-decoration-none d-flex align-items-center">
+    <i class="bi bi-arrow-left me-2 fs-4"></i>
+    <span class="fs-5">Volver al inicio</span>
+  </a>
+</div>
+
+<div class="profile-container">
+  <h2 class="profile-list-title">Perfiles del Sistema</h2>
+
+  <div *ngFor="let user of allUsers" class="user-card">
+    <h3>{{ user.username }}</h3>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Teléfono:</strong> {{ user.phoneNumber }}</p>
+
+    <div class="user-actions">
+      <button class="btn-edit-user" (click)="startEditUser(user)" aria-label="Editar usuario" title="Editar usuario">
+        <i class="bi bi-pencil-fill" style="font-size: 1.2rem;"></i>
+      </button>
+      <button class="btn-delete-user" (click)="confirmDelete(user.username)" aria-label="Eliminar usuario"
+        title="Eliminar usuario">
+        <i class="bi bi-trash-fill" style="font-size: 1.2rem;"></i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="editedUser" class="edit-user-form">
+    <h2>Editar Usuario: {{ editedUser.username }}</h2>
+
+    <form (ngSubmit)="saveEditedUser()" class="form-grid">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="editedUser.email" name="email" required />
+
+      <label>Confirmar Email</label>
+      <input type="email" [(ngModel)]="editedUser.verifyEmail" name="verifyEmail" required />
+
+      <label>Teléfono</label>
+      <input type="text" [(ngModel)]="editedUser.phoneNumber" name="phoneNumber" required />
+
+      <label>Nueva Contraseña (opcional)</label>
+      <input type="password" [(ngModel)]="editedUser.password" name="password" />
+
+      <label>Confirmar Contraseña</label>
+      <input type="password" [(ngModel)]="editedUser.verifyPassword" name="verifyPassword" />
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-save">Guardar Cambios</button>
+        <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="pagination-container" *ngIf="!editedUser && totalPages > 1">
+    <button class="pagination-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">Anterior</button>
+    <span class="pagination-info">Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    <button class="pagination-btn" [disabled]="currentPage === totalPages - 1"
+      (click)="goToPage(currentPage + 1)">Siguiente</button>
+  </div>
+</div>

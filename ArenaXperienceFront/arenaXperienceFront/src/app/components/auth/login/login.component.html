@@ -1,0 +1,29 @@
+<app-nav-inicio-sesion></app-nav-inicio-sesion>
+<div class="login-page">
+  <div class="card login-container">
+    <div class="card-header">
+      <img src="https://png.pngtree.com/png-clipart/20210905/original/pngtree-boy-playing-football-png-image_6696068.jpg" alt="Icono de usuarios" width="50" class="mb-3" />
+      <h2 class="card-title">Inicio de Sesión</h2>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" id="username" formControlName="username" class="form-control" placeholder="Usuario" />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" formControlName="password" class="form-control" placeholder="••••••••" />
+        </div>
+
+        <button type="submit" class="btn btn-login mb-3" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+
+        <div *ngIf="error" class="alert alert-danger mt-3 text-center">
+          {{ error }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

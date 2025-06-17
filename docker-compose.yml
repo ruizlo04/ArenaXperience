@@ -1,11 +1,10 @@
 services:
-
+  # Base de datos PostgreSQL
   pg:
     image: postgres:16-alpine
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345678
-      - POSTGRES_DB=ArenaXperience
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 30s
@@ -18,6 +17,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  # Interfaz web para PostgreSQL
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin-spring
@@ -30,15 +30,33 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
-
+  # Backend Spring Boot
   app:
-    build: .
+    build:
+      context: ./ApiArenaXperience
+      dockerfile: Dockerfile
     container_name: arenaXperience
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=12345678
     ports:
       - "8080:8080"
     depends_on:
       pg:
         condition: service_healthy
+    restart: on-failure
+
+  # Frontend Angular SSR
+  frontend:
+    build:
+      context: ./ArenaXperienceFront/arenaXperienceFront
+      dockerfile: Dockerfile
+    container_name: arenaXperience-front
+    ports:
+      - "4000:4000"
+    depends_on:
+      - app
     restart: on-failure
 
 volumes:
