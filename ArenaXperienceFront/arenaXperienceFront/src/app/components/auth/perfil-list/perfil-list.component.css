@@ -188,3 +188,32 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
+.user-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.btn-edit-user, .btn-delete-user {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.btn-edit-user {
+  color: #2c3e50;
+}
+
+.btn-delete-user {
+  color: #e74c3c;
+}
+
+.btn-edit-user:hover {
+  color: #3498db;
+}
+
+.btn-delete-user:hover {
+  color: #c0392b;
+}

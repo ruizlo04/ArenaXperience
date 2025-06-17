@@ -3,24 +3,19 @@
 <div class="profile-container">
   <h2 class="profile-list-title">Perfiles del Sistema</h2>
 
-  <button class="reload-btn mb-4" (click)="loadAllUsers(currentPage)">Recargar Perfiles</button>
+  <div *ngFor="let user of allUsers" class="user-card">
+    <h3>{{ user.username }}</h3>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Teléfono:</strong> {{ user.phoneNumber }}</p>
 
-  <div *ngIf="loadingUsers" class="loading-text">Cargando usuarios...</div>
-  <div *ngIf="usersError" class="error-text">{{ usersError }}</div>
-
-  <div *ngIf="!editedUser" class="profile-card">
-    <div *ngFor="let user of allUsers" class="user-card">
-      <h3>{{ user.username }}</h3>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Teléfono:</strong> {{ user.phoneNumber }}</p>
-
-      <button class="btn-edit-event" (click)="startEditUser(user)" aria-label="Editar usuario" title="Editar usuario">
+    <div class="user-actions">
+      <button class="btn-edit-user" (click)="startEditUser(user)" aria-label="Editar usuario" title="Editar usuario">
         <i class="bi bi-pencil-fill" style="font-size: 1.2rem;"></i>
       </button>
-    </div>
-
-    <div *ngIf="!loadingUsers && allUsers.length === 0" class="loading-text">
-      No hay usuarios registrados.
+      <button class="btn-delete-user" (click)="confirmDelete(user.username)" aria-label="Eliminar usuario"
+        title="Eliminar usuario">
+        <i class="bi bi-trash-fill" style="font-size: 1.2rem;"></i>
+      </button>
     </div>
   </div>
 
@@ -53,6 +48,7 @@
   <div class="pagination-container" *ngIf="!editedUser && totalPages > 1">
     <button class="pagination-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">Anterior</button>
     <span class="pagination-info">Página {{ currentPage + 1 }} de {{ totalPages }}</span>
-    <button class="pagination-btn" [disabled]="currentPage === totalPages - 1" (click)="goToPage(currentPage + 1)">Siguiente</button>
+    <button class="pagination-btn" [disabled]="currentPage === totalPages - 1"
+      (click)="goToPage(currentPage + 1)">Siguiente</button>
   </div>
 </div>
