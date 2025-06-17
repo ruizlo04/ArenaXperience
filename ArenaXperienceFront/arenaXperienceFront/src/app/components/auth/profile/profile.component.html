@@ -25,7 +25,6 @@
       <p><strong>🕒 Miembro desde:</strong> {{ user.createdAt | date:'medium' }}</p>
     </div>
 
-    <!-- Formulario de edición -->
     <div class="profile-content" *ngIf="editing">
       <form (ngSubmit)="saveChanges()">
         <div class="mb-2">
@@ -40,12 +39,12 @@
 
         <div class="mb-2">
           <label>Nueva contraseña:</label>
-          <input type="password" class="form-control" [(ngModel)]="editedUser.password" name="password" required>
+          <input type="password" class="form-control" [(ngModel)]="editedUser.password" name="password">
         </div>
 
         <div class="mb-2">
           <label>Confirmar contraseña:</label>
-          <input type="password" class="form-control" [(ngModel)]="editedUser.verifyPassword" name="verifyPassword" required>
+          <input type="password" class="form-control" [(ngModel)]="editedUser.verifyPassword" name="verifyPassword">
         </div>
 
         <div class="mb-2">

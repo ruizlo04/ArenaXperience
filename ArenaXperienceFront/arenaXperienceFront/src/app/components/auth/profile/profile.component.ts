@@ -51,14 +51,24 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    if (this.editedUser.password !== this.editedUser.verifyPassword) {
-      alert('Las contraseñas no coinciden.');
-      return;
+    if (this.editedUser.password || this.editedUser.verifyPassword) {
+      if (this.editedUser.password !== this.editedUser.verifyPassword) {
+        alert('Las contraseñas no coinciden.');
+        return;
+      }
     }
 
     const username = this.user.username;
 
-    this.authService.editUser(username, this.editedUser).subscribe({
+    const updatedData = {
+      email: this.editedUser.email,
+      verifyEmail: this.editedUser.verifyEmail,
+      phoneNumber: this.editedUser.phoneNumber,
+      password: this.editedUser.password || '', 
+      verifyPassword: this.editedUser.verifyPassword || '' 
+    };
+
+    this.authService.editUser(username, updatedData).subscribe({
       next: (updatedUser) => {
         this.user = updatedUser;
         this.editing = false;
@@ -70,4 +80,5 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+
 }
