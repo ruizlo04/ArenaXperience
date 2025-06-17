@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit {
   totalPages: number = 0;
   pageSize: number = 5;
   menuOpen: boolean = false;
-  token: string = '';
   currentFilters: any = {};
 
   constructor(
@@ -25,8 +24,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.token = localStorage.getItem('token') || '';
-      if (this.token) {
+      const token = this.eventService.getToken();
+      if (token) {
         this.getEvents(this.currentPage);
       } else {
         console.warn('Token no encontrado');
@@ -36,9 +35,10 @@ export class HomeComponent implements OnInit {
 
   getEvents(page: number, filters: any = {}): void {
     this.currentPage = page;
+    const token = this.eventService.getToken();
 
     if (Object.keys(filters).length > 0) {
-      this.eventService.searchEvents(this.token, filters).subscribe({
+      this.eventService.searchEvents(token, filters).subscribe({
         next: (res) => {
           this.events = res;
           this.totalPages = 1;
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
         }
       });
     } else {
-      this.eventService.getEventsPaginated(this.token, page, this.pageSize).subscribe({
+      this.eventService.getEventsPaginated(token, page, this.pageSize).subscribe({
         next: (res) => {
           this.events = res.content;
           this.totalPages = res.totalPages;
@@ -93,5 +93,29 @@ export class HomeComponent implements OnInit {
     return role === 'ADMIN';
   }
 
+  confirmDeleteEvent(eventName: string): void {
+    if (confirm(`¿Estás seguro que deseas eliminar el evento "${eventName}"? Esta acción no se puede deshacer.`)) {
+      this.deleteEvent(eventName);
+    }
+  }
 
+  deleteEvent(eventName: string): void {
+    const token = this.eventService.getToken();
+
+    if (!token) {
+      alert('No estás autenticado. Por favor inicia sesión.');
+      return;
+    }
+
+    this.eventService.deleteEvent(eventName).subscribe({
+      next: () => {
+        alert('Evento eliminado correctamente');
+        this.getEvents(this.currentPage, this.currentFilters);
+      },
+      error: (error) => {
+        console.error('Error al eliminar evento:', error);
+        alert('No se pudo eliminar el evento: ' + (error.error?.detail || error.message));
+      }
+    });
+  }
 }
