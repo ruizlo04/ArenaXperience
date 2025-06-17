@@ -70,4 +70,10 @@ export class AuthService {
     return null;
   }
 
+  editUser(username: string, data: { email: string; phoneNumber: string; password: string }) {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<any>(`${this.apiUrl}/user/${username}`, data, { headers });
+  }
+
 }

@@ -113,16 +113,40 @@ public class UserService {
 
         Optional<Usuario> userToEdit = userRepository.findFirstByUsername(username);
 
-        if (userToEdit.isEmpty()){
+        if (userToEdit.isEmpty()) {
             throw new UsersNotFoundException("No se ha encontrado ese Usuario");
         }
 
-        userToEdit.get().setEmail(editUserCmd.email());
-        userToEdit.get().setPassword(editUserCmd.password());
-        userToEdit.get().setPhoneNumber(editUserCmd.phoneNumber());
+        Usuario user = userToEdit.get();
 
-        return userRepository.save(userToEdit.get());
+        if (!editUserCmd.email().equals(editUserCmd.verifyEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los emails no coinciden");
+        }
+
+        String pwd = editUserCmd.password();
+        String verifyPwd = editUserCmd.verifyPassword();
+        if (pwd != null && !pwd.isBlank()) {
+            if (!pwd.equals(verifyPwd)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
+            }
+
+            if (pwd.length() < 8 || pwd.length() > 20) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña debe tener entre 8 y 20 caracteres");
+            }
+            if (!pwd.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[-@$!%*?&])[A-Za-z\\d-@$!%*?&]{8,}$")) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña debe contener mayúscula, minúscula, número y carácter especial");
+            }
+
+            user.setPassword(passwordEncoder.encode(pwd));
+        }
+
+        user.setEmail(editUserCmd.email());
+        user.setPhoneNumber(editUserCmd.phoneNumber());
+
+        return userRepository.save(user);
     }
+
+
 
     public Usuario editUserByAdmin(String username, EditUserCmd editUserCmd) {
 
