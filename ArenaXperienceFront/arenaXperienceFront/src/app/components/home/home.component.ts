@@ -83,4 +83,15 @@ export class HomeComponent implements OnInit {
   buyTicket(eventName: string): void {
     this.router.navigate(['/ticket-list', eventName]);
   }
+
+  editEvent(eventName: string): void {
+    this.router.navigate(['/edit-event', eventName]);
+  }
+
+  isAdmin(): boolean {
+    const role = localStorage.getItem('role');
+    return role === 'ADMIN';
+  }
+
+
 }
