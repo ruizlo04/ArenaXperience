@@ -1,0 +1,30 @@
+<app-navbar-principal></app-navbar-principal>
+
+<div class="profile-container">
+  <h2 class="profile-list-title">Perfiles del Sistema</h2>
+
+  <button class="reload-btn mb-4" (click)="loadAllUsers(currentPage)">Recargar Perfiles</button>
+
+  <div *ngIf="loadingUsers" class="loading-text">Cargando usuarios...</div>
+  <div *ngIf="usersError" class="error-text">{{ usersError }}</div>
+
+  <div class="profile-card">
+    <div *ngFor="let user of allUsers" class="user-card">
+      <h3>{{ user.username }}</h3>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Teléfono:</strong> {{ user.phoneNumber }}</p>
+    </div>
+
+    <div *ngIf="!loadingUsers && allUsers.length === 0" class="loading-text">
+      No hay usuarios registrados.
+    </div>
+  </div>
+
+  <div class="pagination-container" *ngIf="totalPages > 1">
+    <button class="pagination-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">Anterior</button>
+    
+    <span class="pagination-info">Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    
+    <button class="pagination-btn" [disabled]="currentPage === totalPages - 1" (click)="goToPage(currentPage + 1)">Siguiente</button>
+  </div>
+</div>

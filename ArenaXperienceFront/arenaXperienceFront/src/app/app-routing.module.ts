@@ -12,6 +12,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ReviewComponent } from './components/review/review.component';
 import { CrearEventoComponent } from './components/crear-evento/crear-evento.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { PerfilListComponent } from './components/auth/perfil-list/perfil-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'reviews/:eventName', component: ReviewComponent },
   { path: 'crear-evento', component: CrearEventoComponent },
   { path: 'edit-event/:name', component: EditEventComponent },
+  { path: 'perfil-list', component: PerfilListComponent },
   { path: 'chat', component: ChatComponent } 
 ];
 
