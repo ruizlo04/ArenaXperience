@@ -13,7 +13,9 @@ export class PerfilListComponent implements OnInit {
   currentPage = 0;
   totalPages = 0;
 
-  constructor(private authService: AuthService) {}
+  editedUser: any = null;
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.loadAllUsers();
@@ -40,5 +42,52 @@ export class PerfilListComponent implements OnInit {
     if (page >= 0 && page < this.totalPages) {
       this.loadAllUsers(page);
     }
+  }
+
+  startEditUser(user: any): void {
+    this.editedUser = {
+      username: user.username,
+      email: user.email,
+      verifyEmail: user.email,
+      phoneNumber: user.phoneNumber,
+      password: '',
+      verifyPassword: ''
+    };
+  }
+
+  saveEditedUser(): void {
+    if (!this.editedUser) return;
+
+    if (this.editedUser.email !== this.editedUser.verifyEmail) {
+      alert('Los correos no coinciden.');
+      return;
+    }
+    if (this.editedUser.password !== this.editedUser.verifyPassword) {
+      alert('Las contraseñas no coinciden.');
+      return;
+    }
+
+    this.authService.editUserByAdmin(this.editedUser.username, {
+      email: this.editedUser.email,
+      verifyEmail: this.editedUser.verifyEmail,
+      phoneNumber: this.editedUser.phoneNumber,
+      password: this.editedUser.password || '',
+      verifyPassword: this.editedUser.verifyPassword || ''
+    }).subscribe({
+      next: () => {
+        alert('Usuario actualizado correctamente');
+        this.editedUser = null;
+        this.loadAllUsers(this.currentPage);
+      },
+      error: err => {
+        console.error(err);
+        alert('Error al actualizar usuario');
+      }
+    });
+  }
+
+
+  cancelEdit(): void {
+    this.editedUser = null;
   }
 }

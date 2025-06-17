@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080'; 
+  private apiUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
 
@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   getUsername(): string | null {
-    if (typeof window !== 'undefined' && localStorage) {  
+    if (typeof window !== 'undefined' && localStorage) {
       return localStorage.getItem('username');
     }
     return null;
@@ -83,6 +83,24 @@ export class AuthService {
     return this.http.get<any>(`${this.apiUrl}/user/?page=${page}&size=${size}`, { headers });
   }
 
+  editUserByAdmin(username: string, data: {
+    email: string;
+    verifyEmail: string;
+    phoneNumber: string;
+    password: string;
+    verifyPassword: string;
+  }) {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.put<any>(`${this.apiUrl}/user/admin/${username}`, {
+      email: data.email,
+      verifyEmail: data.verifyEmail,
+      phoneNumber: data.phoneNumber,
+      password: data.password,
+      verifyPassword: data.verifyPassword
+    }, { headers });
+  }
 
 
 }
