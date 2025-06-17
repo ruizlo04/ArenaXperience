@@ -60,4 +60,9 @@ export class EventService {
     });
   }
 
+  editarEvento(eventName: string, data: any, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.baseUrl}/evento/editar/${encodeURIComponent(eventName)}`, data, { headers });
+  }
+
 }

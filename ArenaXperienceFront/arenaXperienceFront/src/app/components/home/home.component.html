@@ -9,7 +9,15 @@
 
   <div class="row justify-content-center" *ngIf="events && events.length > 0">
     <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let event of events">
-      <div class="card text-white h-100" style="background: linear-gradient(135deg, #e03724 0%, #e11f0e 100%); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(62, 11, 6, 0.4); border: 1px solid rgba(255,255,255,0.1); font-family: 'Creepster', cursive; transition: transform 0.4s;">
+      
+      <div class="card text-white h-100 position-relative" style="background: linear-gradient(135deg, #e03724 0%, #e11f0e 100%); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(62, 11, 6, 0.4); border: 1px solid rgba(255,255,255,0.1); font-family: 'Creepster', cursive; transition: transform 0.4s;">
+        
+        <div class="position-absolute top-0 end-0 m-2" *ngIf="isAdmin()" style="z-index: 2;">
+          <button class="btn-edit-event" (click)="editEvent(event.name)" aria-label="Editar evento" title="Editar evento">
+            <i class="bi bi-pencil-fill" style="font-size: 1.2rem;"></i>
+          </button>
+        </div>
+
         <img [src]="event.fotoName || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=200&fit=crop'" class="card-img-top" style="height: 200px; object-fit: cover;" [alt]="event.name">
 
         <div class="card-body text-center">

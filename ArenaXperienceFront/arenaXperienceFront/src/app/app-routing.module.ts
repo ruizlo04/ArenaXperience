@@ -11,6 +11,7 @@ import { ProfileComponent } from './components/auth/profile/profile.component';
 import { ChatComponent } from './components/chat/chat.component'; 
 import { ReviewComponent } from './components/review/review.component';
 import { CrearEventoComponent } from './components/crear-evento/crear-evento.component';
+import { EditEventComponent } from './components/edit-event/edit-event.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'reviews/:eventName', component: ReviewComponent },
   { path: 'crear-evento', component: CrearEventoComponent },
+  { path: 'edit-event/:name', component: EditEventComponent },
   { path: 'chat', component: ChatComponent } 
 ];
 
