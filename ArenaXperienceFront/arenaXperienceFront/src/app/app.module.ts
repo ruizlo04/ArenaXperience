@@ -20,6 +20,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ReviewComponent } from './components/review/review.component';
 import { CrearEventoComponent } from './components/crear-evento/crear-evento.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { PerfilListComponent } from './components/auth/perfil-list/perfil-list.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { EditEventComponent } from './components/edit-event/edit-event.component
     ChatComponent,
     ReviewComponent,
     CrearEventoComponent,
-    EditEventComponent
+    EditEventComponent,
+    PerfilListComponent
   ],
   imports: [
     RouterModule,
